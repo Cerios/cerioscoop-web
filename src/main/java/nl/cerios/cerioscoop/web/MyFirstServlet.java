@@ -15,11 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nl.cerios.cerioscoop.domain.FilmAgendaItem;
-import nl.cerios.cerioscoop.service.FilmAgendaItemService;
+import nl.cerios.cerioscoop.domain.Film;
+import nl.cerios.cerioscoop.service.VoorstellingService;
 import nl.cerios.cerioscoop.util.DateUtils;
-
-
 
 /**
  * Servlet implementation class MyFirstServlet
@@ -30,8 +28,8 @@ import nl.cerios.cerioscoop.util.DateUtils;
 public class MyFirstServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static DateUtils DU = new DateUtils();
+	private static VoorstellingService VS = new VoorstellingService();
 	
-   	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 * 
@@ -40,19 +38,19 @@ public class MyFirstServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		List<FilmAgendaItem> items = FilmAgendaItemService.getFilmAgendaItems();  //hierbij gaf de service een NullPointerException
-		List<FilmAgendaItem> items2 = FilmAgendaItemService.getFirstFilmAgendaItems();
-		List<FilmAgendaItem> items3 = FilmAgendaItemService.getFilmAgendaItems2();
-		List<FilmAgendaItem> items4 = FilmAgendaItemService.getFirstFilmAgendaItems2();
+		List<Film> items = VS.getFilms();
+		Film items2 = VS.getFirstFilmAfterCurrentDate();
+		java.util.Date premMoment = null;
+		String premMomentDB = null;
 		
-		items3.sort(new Comparator<FilmAgendaItem>() {
+		items.sort(new Comparator<Film>() {
 
 			@Override
-			public int compare(FilmAgendaItem itemL, FilmAgendaItem itemR) {  //is itemL groter dan itemR? anders bovenaan
-				if (itemL.getDatum().before(itemR.getDatum())) {
-					return 1;
-				} else if (itemL.getDatum().after(itemR.getDatum())) {
+			public int compare(Film itemL, Film itemR) {  //is itemL groter dan itemR? anders bovenaan
+				if (itemL.getPremiereDatum().before(itemR.getPremiereDatum())) {
 					return -1;
+				} else if (itemL.getPremiereDatum().after(itemR.getPremiereDatum())) {
+					return 1;
 				} else {
 					return 0;
 				}
@@ -66,47 +64,31 @@ public class MyFirstServlet extends HttpServlet {
 			        .append("<table>")
 			        .append("<thead><th>Filmtitel</th><th>speelt op:</th><th>tijd</th></thead>")
 			        .append("<tbody>");
-			    for (FilmAgendaItem item : items) {
+			    for (Film item : items) {
 				html.append("<tr><td>")
-					.append(item.getTitel())
+					.append(item.getNaam())
 					.append("</td><td>")
-					.append(DU.format(item.getDatum()))
+					.append(DU.format(item.getPremiereDatum()))
 					.append("</td><td>")
-					.append(DU.formatTijd(item.getTijd()))
+					.append(DU.formatTijd(item.getPremiereTijd()))
 					.append("</td></tr>");
 					}
 			    html.append("</tbody>")
 					.append("</table>");
-			    for (FilmAgendaItem item : items2) {
-				html.append("</tbody>")
-					.append("</table>")
-					.append("<h1></h1>")
-					.append("<p>Vandaag is het " +DU.getDate())
-					.append("<br />De eerstvolgende film is op "+DU.format2(item.getDatum())+" om "+DU.formatTijd(item.getTijd()))
-					.append("<br />Dat is over circa 2 weken."+ "</p>");
-			    	}
-			    
-			    html.append("<body><h1>Filmagenda</h1>")
-					.append("<table>")
-					.append("<thead><th>Filmtitel</th><th>speelt op:</th><th>tijd</th></thead>")
-					.append("<tbody>");
-			    for (FilmAgendaItem item : items3) {
-			    html.append("<tr><td>")
-					.append(item.getTitel())
-					.append("</td><td>")
-					.append(DU.format(item.getDatum()))
-					.append("</td><td>")
-					.append(DU.formatTijd(item.getTijd()))
-					.append("</td></tr>");
+			   // for (Film item : items) {
+			    	premMomentDB = DU.formatHeidi(items2.getPremiereDatum())+" "+DU.formatTijd(items2.getPremiereTijd());
+					try {
+						premMoment = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(premMomentDB);
+					} catch (ParseException e) {
+						throw new MyFirstServletException("Something went wrong while parsing premiere datum.", e);
 					}
-			    for (FilmAgendaItem item : items4) {
-				html.append("</tbody>")
+			    html.append("</tbody>")
 					.append("</table>")
 					.append("<h1></h1>")
 					.append("<p>Vandaag is het " +DU.getDate())
-					.append("<br />De eerstvolgende film is op "+DU.format2(item.getDatum())+" om "+DU.formatTijd(item.getTijd()))
-					.append("<br />Dat is over circa 2 weken."+ "</p>");
-			    	}
+					.append("<br />De eerstvolgende film: "+items2.getNaam() +" is op "+DU.format2(items2.getPremiereDatum())+" om "+DU.formatTijd(items2.getPremiereTijd()))
+					.append("<br />Dat is over "+ DU.calculateTime(DU.getSecondsBetween(premMoment, DU.getCurrentDate())) +"</p>");
+			//    	}
 			    html.append("</body>")
 			        .append("</html>");
 
@@ -120,12 +102,14 @@ public class MyFirstServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		Date date = null;
 		Date date2 = null;
 		DateFormat from = new SimpleDateFormat("MM/dd/yyyy"); 						// current format
 		DateFormat formatTo = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);	// wanted format
 		java.sql.Date premdatum = null;
 		java.sql.Date laatvoor = null;
+		java.sql.Time premtijd = DU.getCurrentSqlTime();
 
 		if (request.getParameter("submitit").equals("submit")) {
 			String filmnaam = request.getParameter("filmnaam");
@@ -140,12 +124,12 @@ public class MyFirstServlet extends HttpServlet {
 				date = formatTo.parse(premdat);
 				lavoor = formatTo.format(from.parse(lavoor));
 				date2 = formatTo.parse(lavoor); 
-				premdatum = new java.sql.Date(date.getTime());  //Maak een methode in DateUtils!
-				laatvoor = new java.sql.Date(date2.getTime());	//Maak een methode in DateUtils!
+				premdatum = new java.sql.Date(date.getTime());  //Maak methode in DateUtils!
+				laatvoor = new java.sql.Date(date2.getTime());	//Maak methode in DateUtils!
 			} catch (ParseException e) {
 				throw new MyFirstServletException("Something went wrong while parsing premiere datum.", e);
 				}
-			FilmAgendaItemService.registerFilm(filmnaam, minuten, type, taal, premdatum, laatvoor);
+			VS.registerFilm(filmnaam, minuten, type, taal, premdatum, premtijd, laatvoor);
 		}
 		doGet(request, response);
 	}
