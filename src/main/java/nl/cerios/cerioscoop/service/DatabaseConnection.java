@@ -5,8 +5,8 @@ import java.sql.SQLException;
 
 import com.mysql.jdbc.Connection;
 
-public class FilmAgendaDatabaseConnection {
-	static Connection con;
+public class DatabaseConnection {
+	private static Connection con;
 	
 	public static Connection connectionDatabase() {
 		try {
