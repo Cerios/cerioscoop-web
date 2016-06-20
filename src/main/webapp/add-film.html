@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Save Film</title>
+
+   	<!-- Main CSS
+   	================================================== -->
+	<link rel="stylesheet" href="css/style.css">
+
+	<!-- Google web font
+   ================================================== -->
+	<link href='https://fonts.googleapis.com/css?family=Raleway:700' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+
+
+<!-- Navigation section
+================================================== -->
+<section class="navbar navbar-fixed-top custom-navbar" role="navigation">
+	<div class="container">
+
+		<div class="navbar-header">
+			<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon icon-bar"></span>
+				<span class="icon icon-bar"></span>
+				<span class="icon icon-bar"></span>
+			</button>
+			<a href="http://localhost:9080/cerioscoop-web/index.html" class="smoothScroll navbar-brand">CERIOSCOOP</a>
+		</div>
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-right">
+            
+				<!-- <li><a href="#home" class="smoothScroll">HOME</a></li> -->
+                
+				<li><a href="now-showing.jsp" class="smoothScroll">NOW SHOWING</a></li>
+				<li><a href="http://localhost:9080/cerioscoop-web/index.html" class="smoothScroll">ABOUT</a></li>
+				<li><a href="http://localhost:9080/cerioscoop-web/index.html" class="smoothScroll">TEAM</a></li>
+				<li><a href="add-showing.html" class="smoothScroll">ADD SHOWING</a></li>
+				<li><a href="add-film.html" class="smoothScroll">ADD FILM</a></li>
+				<li><a href="http://localhost:9080/cerioscoop-web/index.html" class="smoothScroll">TRAILERS</a></li>
+			</ul>
+		</div>
+
+	</div>
+</section>
+
+<h1>Add film</h1>
+<form method="POST" action="http://localhost:9080/cerioscoop-web/AddFilmServlet"> 
+  Film name:<br>
+  <input type="text" name="filmname">
+  <br>
+  Minutes:<br>
+  <input type="text" name="minutes">
+  <br>
+  Film type 2D of 3D:<br>
+  <input type="radio" name="type" value="2"> 2D<br>
+  <input type="radio" name="type" value="3"> 3D<br>
+  Language:<br>
+  <select name="language">
+  <option value="English">English</option>
+  <option value="German">German</option>
+  <option value="Dutch">Dutch</option>
+  <option value="French">French</option>
+  </select>
+  <br><br>
+  <input type="submit" name="submitit" value="Submit">
+</form> 
+</body>
+</html>

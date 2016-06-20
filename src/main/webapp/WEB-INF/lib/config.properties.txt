@@ -1,3 +1,0 @@
-user=root
-password=mhx60099
-dburl=jdbc:mysql://localhost/cerioscoopdb

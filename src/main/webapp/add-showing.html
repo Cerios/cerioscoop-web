@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="ISO-8859-1">
+<title>Add showing</title>
+
+   	<!-- Main CSS
+   	================================================== -->
+	<link rel="stylesheet" href="css/style.css">
+
+	<!-- Google web font
+   ================================================== -->
+	<link href='https://fonts.googleapis.com/css?family=Raleway:700' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script>
+ $(function() {
+ $( "#datepicker" ).datepicker();});
+</script>
+ <script>
+ $(function() {
+ $( "#datepicker2" ).datepicker();});
+</script>
+
+
+</head>
+<body>
+
+<!-- Navigation section
+================================================== -->
+<section class="navbar navbar-fixed-top custom-navbar" role="navigation">
+	<div class="container">
+
+		<div class="navbar-header">
+			<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon icon-bar"></span>
+				<span class="icon icon-bar"></span>
+				<span class="icon icon-bar"></span>
+			</button>
+			<a href="http://localhost:9080/cerioscoop-web/index.html" class="smoothScroll navbar-brand">CERIOSCOOP</a>
+		</div>
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-right">
+            
+				<!-- <li><a href="#home" class="smoothScroll">HOME</a></li> -->
+                
+				<li><a href="now-showing.jsp" class="smoothScroll">NOW SHOWING</a></li>
+				<li><a href="http://localhost:9080/cerioscoop-web/index.html" class="smoothScroll">ABOUT</a></li>
+				<li><a href="http://localhost:9080/cerioscoop-web/index.html" class="smoothScroll">TEAM</a></li>
+				<li><a href="add-showing.html" class="smoothScroll">ADD SHOWING</a></li>
+				<li><a href="add-film.html" class="smoothScroll">ADD FILM</a></li>
+				<li><a href="http://localhost:9080/cerioscoop-web/index.html" class="smoothScroll">TRAILERS</a></li>
+			</ul>
+		</div>
+
+	</div>
+</section>
+
+<h1>Add showing</h1>
+<form name="add-showing" method="post" action="http://localhost:9080/cerioscoop-web/AddShowingServlet">
+Film ID:<br>
+<input type="text" name="filmID"><br>
+Room ID:<br>
+<input type="radio" name="roomID" value="1"> Red room<br>
+<input type="radio" name="roomID" value="2"> Blue room<br>
+Premiere date:<br>
+<input type="text" id="datepicker" name="premieredate"><br>
+Last showing date:<br>
+ <input type="text" id="datepicker2" name="lastshowingdate"><br>
+ <input type="submit" name="submitit" value="Submit"/>
+ <input type="reset" value="cancel" />
+ </form>
+ </body>
+</html>
