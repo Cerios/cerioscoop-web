@@ -76,6 +76,43 @@ public class ShowingService {
 	    }
 	}
 	
+	/**
+	 * Returns a first showing record.
+	 * 
+	 * @return firstShowing
+	 */
+	public Showing getFirstShowingAfterCurrentDate(){
+		final List<Showing> showings = getShowings();
+		final DateUtils dateUtils = new DateUtils();
+		Showing firstShowing = null;
+		
+		for (final Showing showing : showings) {
+			if(showing.getPremiereDate().after(dateUtils.getCurrentSqlDate())){	
+				if(firstShowing == null){			//hier wordt voor 1x eerstVolgendeFilm gevuld					
+					firstShowing = showing;
+				}
+				else if(showing.getPremiereDate().before(firstShowing.getPremiereDate())){
+					firstShowing = showing;			
+				}
+			}
+		}
+		System.out.println(firstShowing);
+		return firstShowing;
+	}
+		
+	public Film getFilmByFilmId(final int filmId) throws FilmNotFoundException {
+		final List<Film> films = getFilms();
+		Film filmByFilmId = null;
+		
+		for (final Film filmItem : films){
+			if(filmItem.getFilmId() == filmId){
+				filmByFilmId = filmItem;
+			}
+		}
+		return filmByFilmId;
+	}
+	
+	
 	
 	public void addFilm(final String newFilmName, final int minutes, final int movieType, final String language) {
 		try {
@@ -109,30 +146,6 @@ public class ShowingService {
 	    }catch (final SQLException e) {
 	    	throw new ShowingServiceException("Something went wrong while inserting the filmagenda items.", e);
 	    }
-	}
-	
-	/**
-	 * Returns a first showing record.
-	 * 
-	 * @return firstShowing
-	 */
-	public Showing getFirstShowingAfterCurrentDate(){
-		final List<Showing> showings = getShowings();
-		final DateUtils dateUtils = new DateUtils();
-		Showing firstShowing = null;
-		
-		for (final Showing showing : showings) {
-			if(showing.getPremiereDate().after(dateUtils.getCurrentSqlDate())){	
-				if(firstShowing == null){			//hier wordt voor 1x eerstVolgendeFilm gevuld					
-					firstShowing = showing;
-				}
-				else if(showing.getPremiereDate().before(firstShowing.getPremiereDate())){
-					firstShowing = showing;			
-				}
-			}
-		}
-		System.out.println(firstShowing);
-		return firstShowing;
 	}
 }
 

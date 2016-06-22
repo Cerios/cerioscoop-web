@@ -12,10 +12,6 @@ public class Showing {
 	private Date lastShowingDate;
 	private Time lastShowingTime;
 	
-	// TODO this constructor is never used, do we need it?
-	public Showing() {
-		
-	}
 	public Showing(final int showingId, final int filmId, final int roomId, final Date premiereDate, final Time premiereTime, final Date lastShowingDate, final  Time lastShowingTime) {
 		this.showingId = showingId;
 		this.filmId = filmId;

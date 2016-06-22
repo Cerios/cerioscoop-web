@@ -7,11 +7,6 @@ public class Film {
 	private int movieType;
 	private String language;
 
-	// TODO this constructor is never used, do we need it?
-	public Film() {
-
-	}
-
 	public Film(final int filmId, final String name, final int minutes, final int movieType, final String language) {
 		this.filmId = filmId;
 		this.name = name;
