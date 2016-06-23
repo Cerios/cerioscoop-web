@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import nl.cerios.cerioscoop.domain.Showing;
 import nl.cerios.cerioscoop.service.ShowingService;
 import nl.cerios.cerioscoop.util.DateUtils;
 
@@ -44,32 +43,23 @@ public class AddShowingServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-		Date date = null;
-		Date date2 = null;
-		final DateFormat from = new SimpleDateFormat("MM/dd/yyyy"); 					// current format
-		final DateFormat formatTo = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);	// wanted format
-		final java.sql.Time premiereTime = dateUtils.getCurrentSqlTime();	//ToDo
-		final java.sql.Time lastShowingTime = dateUtils.getCurrentSqlTime();//ToDo
-		java.sql.Date premiereDate = null;
-		java.sql.Date lastShowingDate = null;
+		Showing showing = new Showing();
+		final DateFormat dateformat = new SimpleDateFormat("MM/dd/yyyy"); 					// current format
 
 		if ("Submit".equals(request.getParameter("submitit"))) {
-			final int filmID = Integer.parseInt(request.getParameter("filmID"));
-			final int roomID = Integer.parseInt(request.getParameter("roomID"));		
-			String premieredate = request.getParameter("premieredate");
-			String lastshowingdate = request.getParameter("lastshowingdate");
-			
+			showing.setFilmId(Integer.parseInt(request.getParameter("filmID")));
+			showing.setRoomId(Integer.parseInt(request.getParameter("roomID")));	
+			showing.setPremiereTime(dateUtils.getCurrentSqlTime());							//TODO remove and input timepicker
+			showing.setLastShowingTime(dateUtils.getCurrentSqlTime());						//TODO remove and input timepicker
 			try {
-				premieredate = formatTo.format(from.parse(premieredate));
-				date = formatTo.parse(premieredate);
-				lastshowingdate = formatTo.format(from.parse(lastshowingdate));
-				date2 = formatTo.parse(lastshowingdate); 
-				premiereDate = new java.sql.Date(date.getTime());  //Maak methode in DateUtils!
-				lastShowingDate = new java.sql.Date(date2.getTime());	//Maak methode in DateUtils!
-			} catch (final ParseException e) {
+				showing.setPremiereDate(new java.sql.Date(dateformat.parse(request.getParameter("premieredate")).getTime()));
+//				showing.setPremiereTime(new java.sql.Time(dateformat.parse(request.getParameter("premieredate")).getTime()));
+				showing.setLastShowingDate(new java.sql.Date(dateformat.parse(request.getParameter("lastshowingdate")).getTime()));
+//				showing.setLastShowingTime(new java.sql.Time(dateformat.parse(request.getParameter("lastshowingdate")).getTime()));
+			} catch (ParseException e) {
 				throw new ShowingException("Something went wrong while parsing premiere datum.", e);
-				}
-			showingService.addShowing(filmID, roomID, premiereDate, premiereTime, lastShowingDate, lastShowingTime);
+			}
+			showingService.addShowing(showing);
 		}
 		doGet(request, response);
 	}

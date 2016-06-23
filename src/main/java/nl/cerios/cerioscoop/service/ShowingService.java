@@ -130,16 +130,16 @@ public class ShowingService {
 	    }
 	}
 	
-	public void addShowing(final int filmId, final int roomId, final Date premiereDate, final Time premiereTime, final Date lastShowingDate, final Time lastShowingTime){		
+	public void addShowing(Showing showing){		
 		try {
 			final PreparedStatement preparedStatement = CONNECTION.prepareStatement(
 					"INSERT INTO showing (film_id, room_id, premiere_date, premiere_time, last_showing_date, last_showing_time) values (?,?,?,?,?,?);");
-        	preparedStatement.setInt(1, filmId);
-        	preparedStatement.setInt(2, roomId);
-        	preparedStatement.setDate(3, premiereDate);
-        	preparedStatement.setTime(4, premiereTime);
-        	preparedStatement.setDate(5, lastShowingDate);
-        	preparedStatement.setTime(6, lastShowingTime);
+        	preparedStatement.setInt(1, showing.getFilmId());
+        	preparedStatement.setInt(2, showing.getRoomId());
+        	preparedStatement.setDate(3, showing.getPremiereDate());
+        	preparedStatement.setTime(4, showing.getPremiereTime());
+        	preparedStatement.setDate(5, showing.getLastShowingDate());
+        	preparedStatement.setTime(6, showing.getLastShowingTime());
         	preparedStatement.executeUpdate();
         	
         	System.out.println("Data inserted.");
