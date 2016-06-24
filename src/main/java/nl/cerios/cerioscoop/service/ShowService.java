@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.cerios.cerioscoop.domain.Film;
-import nl.cerios.cerioscoop.domain.Showing;
+import nl.cerios.cerioscoop.domain.Show;
 import nl.cerios.cerioscoop.util.DateUtils;
 
-public class ShowingService {
+public class ShowService {
 
 	private static final  Connection CONNECTION = DatabaseConnection.connectionDatabase();
 	
@@ -49,12 +49,12 @@ public class ShowingService {
 			}
 			return films;
 	    }catch (final SQLException e) {
-	    	throw new ShowingServiceException("Something went terribly wrong while retrieving the first date.", e);
+	    	throw new ShowServiceException("Something went terribly wrong while retrieving the first date.", e);
 	    }
 	}
 	
-	public List<Showing> getShowings(){
-		final List<Showing> showings = new ArrayList<>();
+	public List<Show> getShows(){
+		final List<Show> shows = new ArrayList<>();
 		try {
 			final Statement statement = CONNECTION.createStatement();
 			final ResultSet resultSet = statement.executeQuery("select showing_id, film_id, room_id, premiere_date, premiere_time, last_showing_date, last_showing_time from showing"); { 
@@ -67,12 +67,12 @@ public class ShowingService {
 				final Date lastShowingDate = resultSet.getDate("last_showing_date");
 				final Time lastShowingTime = resultSet.getTime("last_showing_time");
 				
-	        	showings.add(new Showing(showingId, filmId, roomId, premiereDate, premiereTime, lastShowingDate, lastShowingTime));
+	        	shows.add(new Show(showingId, filmId, roomId, premiereDate, premiereTime, lastShowingDate, lastShowingTime));
 	        	}
-	        return showings;
+	        return shows;
 	      }
 	    }catch (final SQLException e) {
-	    	throw new ShowingServiceException("Something went terribly wrong while retrieving the first date.", e);
+	    	throw new ShowServiceException("Something went terribly wrong while retrieving the first date.", e);
 	    }
 	}
 	
@@ -81,18 +81,18 @@ public class ShowingService {
 	 * 
 	 * @return firstShowing
 	 */
-	public Showing getFirstShowingAfterCurrentDate(){
-		final List<Showing> showings = getShowings();
+	public Show getFirstShowingAfterCurrentDate(){
+		final List<Show> shows = getShows();
 		final DateUtils dateUtils = new DateUtils();
-		Showing firstShowing = null;
+		Show firstShowing = null;
 		
-		for (final Showing showing : showings) {
-			if(showing.getPremiereDate().after(dateUtils.getCurrentSqlDate())){	
+		for (final Show show : shows) {
+			if(show.getPremiereDate().after(dateUtils.getCurrentSqlDate())){	
 				if(firstShowing == null){			//hier wordt voor 1x eerstVolgendeFilm gevuld					
-					firstShowing = showing;
+					firstShowing = show;
 				}
-				else if(showing.getPremiereDate().before(firstShowing.getPremiereDate())){
-					firstShowing = showing;			
+				else if(show.getPremiereDate().before(firstShowing.getPremiereDate())){
+					firstShowing = show;			
 				}
 			}
 		}
@@ -126,25 +126,25 @@ public class ShowingService {
 			
 			System.out.println("Data inserted.");
 	    }catch (final SQLException e) {
-	    	throw new ShowingServiceException("Something went wrong while inserting the filmagenda items.", e);
+	    	throw new ShowServiceException("Something went wrong while inserting the filmagenda items.", e);
 	    }
 	}
 	
-	public void addShowing(Showing showing){		
+	public void addShow(Show show){		
 		try {
 			final PreparedStatement preparedStatement = CONNECTION.prepareStatement(
 					"INSERT INTO showing (film_id, room_id, premiere_date, premiere_time, last_showing_date, last_showing_time) values (?,?,?,?,?,?);");
-        	preparedStatement.setInt(1, showing.getFilmId());
-        	preparedStatement.setInt(2, showing.getRoomId());
-        	preparedStatement.setDate(3, showing.getPremiereDate());
-        	preparedStatement.setTime(4, showing.getPremiereTime());
-        	preparedStatement.setDate(5, showing.getLastShowingDate());
-        	preparedStatement.setTime(6, showing.getLastShowingTime());
+        	preparedStatement.setInt(1, show.getFilmId());
+        	preparedStatement.setInt(2, show.getRoomId());
+        	preparedStatement.setDate(3, show.getPremiereDate());
+        	preparedStatement.setTime(4, show.getPremiereTime());
+        	preparedStatement.setDate(5, show.getLastShowingDate());
+        	preparedStatement.setTime(6, show.getLastShowingTime());
         	preparedStatement.executeUpdate();
         	
         	System.out.println("Data inserted.");
 	    }catch (final SQLException e) {
-	    	throw new ShowingServiceException("Something went wrong while inserting the filmagenda items.", e);
+	    	throw new ShowServiceException("Something went wrong while inserting the filmagenda items.", e);
 	    }
 	}
 }

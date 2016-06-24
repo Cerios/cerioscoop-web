@@ -3,8 +3,8 @@ package nl.cerios.cerioscoop.domain;
 import java.sql.Date;
 import java.sql.Time;
 
-public class Showing {
-	private int showingId;
+public class Show {
+	private int showId;
 	private int filmId;
 	private int roomId;
 	private Date premiereDate;
@@ -12,10 +12,10 @@ public class Showing {
 	private Date lastShowingDate;
 	private Time lastShowingTime;
 	
-	public Showing() {
+	public Show() {
 	}
-	public Showing(final int showingId, final int filmId, final int roomId, final Date premiereDate, final Time premiereTime, final Date lastShowingDate, final  Time lastShowingTime) {
-		this.showingId = showingId;
+	public Show(final int showId, final int filmId, final int roomId, final Date premiereDate, final Time premiereTime, final Date lastShowingDate, final  Time lastShowingTime) {
+		this.showId = showId;
 		this.filmId = filmId;
 		this.roomId = roomId; 
 		this.premiereDate = premiereDate;
@@ -24,11 +24,11 @@ public class Showing {
 		this.lastShowingTime = lastShowingTime;
 		
 	}
-	public int getShowingId() {
-		return showingId;
+	public int getShowId() {
+		return showId;
 	}
-	public void setShowingId(final int showingId) {
-		this.showingId = showingId;
+	public void setShowId(final int showingId) {
+		this.showId = showingId;
 	}
 	public int getFilmId() {
 		return filmId;

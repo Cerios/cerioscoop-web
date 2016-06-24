@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nl.cerios.cerioscoop.service.ShowingService;
+import nl.cerios.cerioscoop.service.ShowService;
 
 /**
  * Servlet implementation class AddFilmServlet
@@ -15,7 +15,7 @@ import nl.cerios.cerioscoop.service.ShowingService;
 @WebServlet("/AddFilmServlet")
 public class AddFilmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final ShowingService SHOWINGSERVICE = new ShowingService();
+	private static final ShowService SHOWINGSERVICE = new ShowService();
 	
     /**
      * @see HttpServlet#HttpServlet()
