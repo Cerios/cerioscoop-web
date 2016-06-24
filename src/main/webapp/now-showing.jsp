@@ -1,3 +1,4 @@
+<%@page import="javax.naming.InitialContext"%>
 <%@page import="nl.cerios.cerioscoop.domain.Film"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="nl.cerios.cerioscoop.web.ShowException"%>
@@ -68,7 +69,9 @@
 <h1>Now Showing</h1>
 <%
 final DateUtils dateUtils = new DateUtils();
-final ShowService showService = new ShowService();
+// TODO Don't refer to EJB's directly from the JSP; use MVC and let the servlet do EJB-calls.
+final ShowService showService = (ShowService) new InitialContext().lookup("java:module/ShowService");
+
 final List<Show> shows = showService.getShows();
 final Show firstShowing = showService.getFirstShowingAfterCurrentDate();
 java.util.Date showingPremiere = null;

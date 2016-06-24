@@ -10,13 +10,19 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+import javax.ejb.Stateless;
+import javax.sql.DataSource;
+
 import nl.cerios.cerioscoop.domain.Film;
 import nl.cerios.cerioscoop.domain.Show;
 import nl.cerios.cerioscoop.util.DateUtils;
 
+@Stateless
 public class ShowService {
 
-	private static final  Connection CONNECTION = DatabaseConnection.connectionDatabase();
+	@Resource(lookup="jdbc/cerioscoop")
+    private DataSource cerioscoopDB;
 	
 	/*TODO rename the SQL field names to full caps names
 	 * Example:
@@ -34,9 +40,10 @@ public class ShowService {
 	 * */
 	
 	public List<Film> getFilms(){
-		try {
+		try (final Connection dbConnection = cerioscoopDB.getConnection();
+			final Statement statement = dbConnection.createStatement()) {
+			
 			final List<Film> films = new ArrayList<>();
-			final Statement statement = CONNECTION.createStatement();
 			final ResultSet resultSet = statement.executeQuery("select film_id, name, minutes, type, language from film");
 			while (resultSet.next()) {
 	        	final int filmId = resultSet.getInt("film_id");
@@ -48,15 +55,16 @@ public class ShowService {
 	        	films.add(new Film(filmId, movieName, minutes, movieType, language));
 			}
 			return films;
-	    }catch (final SQLException e) {
+	    } catch (final SQLException e) {
 	    	throw new ShowServiceException("Something went terribly wrong while retrieving the first date.", e);
 	    }
 	}
 	
 	public List<Show> getShows(){
 		final List<Show> shows = new ArrayList<>();
-		try {
-			final Statement statement = CONNECTION.createStatement();
+		try (final Connection dbConnection = cerioscoopDB.getConnection();
+			final Statement statement = dbConnection.createStatement()) {
+
 			final ResultSet resultSet = statement.executeQuery("select showing_id, film_id, room_id, premiere_date, premiere_time, last_showing_date, last_showing_time from showing"); { 
 			while (resultSet.next()) {
 				final int showingId = resultSet.getInt("showing_id");
@@ -115,9 +123,10 @@ public class ShowService {
 	
 	
 	public void addFilm(final String newFilmName, final int minutes, final int movieType, final String language) {
-		try {
-			final PreparedStatement preparedStatement = CONNECTION.prepareStatement(
-					"INSERT INTO film (name, minutes, type, language) values (?,?,?,?);");
+		try (final Connection dbConnection = cerioscoopDB.getConnection();
+			final PreparedStatement preparedStatement = dbConnection.prepareStatement(
+					"INSERT INTO film (name, minutes, type, language) values (?,?,?,?);")) {
+
 			preparedStatement.setString(1, newFilmName);
 			preparedStatement.setInt(2, minutes);
 			preparedStatement.setInt(3, movieType);
@@ -130,10 +139,11 @@ public class ShowService {
 	    }
 	}
 	
-	public void addShow(Show show){		
-		try {
-			final PreparedStatement preparedStatement = CONNECTION.prepareStatement(
-					"INSERT INTO showing (film_id, room_id, premiere_date, premiere_time, last_showing_date, last_showing_time) values (?,?,?,?,?,?);");
+	public void addShow(Show show){
+		try (final Connection dbConnection = cerioscoopDB.getConnection();
+			final PreparedStatement preparedStatement = dbConnection.prepareStatement(
+					"INSERT INTO showing (film_id, room_id, premiere_date, premiere_time, last_showing_date, last_showing_time) values (?,?,?,?,?,?);");) {
+			
         	preparedStatement.setInt(1, show.getFilmId());
         	preparedStatement.setInt(2, show.getRoomId());
         	preparedStatement.setDate(3, show.getPremiereDate());
