@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +23,10 @@ import nl.cerios.cerioscoop.util.DateUtils;
 public class AddShowServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static DateUtils dateUtils = new DateUtils();
-	private static ShowService showService = new ShowService();   
+	
+	@EJB
+	private ShowService showService;
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
