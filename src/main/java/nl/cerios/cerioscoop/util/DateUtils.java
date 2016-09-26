@@ -16,20 +16,21 @@ import java.util.concurrent.TimeUnit;
  *	http://stackoverflow.com/questions/4216745/java-string-to-date-conversion
  *  http://joda-time.sourceforge.net/quickstart.html
  */
-public class DateUtils {
-	private final String dateMonthFormat = "dd MMMMM";
-	private final String dateFormatSql = "yyyy-MM-dd";
-	private final String toDateFormat = "MM-dd-yyyy";
-	private final String timeFormat = "HH:mm:ss";
+public final class DateUtils {
 	
-	public long getDaysBetween(final Date startDate, final Date endDate) {
+	private static final String dateMonthFormat = "dd MMMMM";
+	private static final String dateFormatSql = "yyyy-MM-dd";
+	private static final String toDateFormat = "MM-dd-yyyy";
+	private static final String timeFormat = "HH:mm:ss";
+	
+	public static long getDaysBetween(final Date startDate, final Date endDate) {
 		long diff = Math.abs(endDate.getTime() - startDate.getTime());
 		long daysBetween = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 		
 		return daysBetween;
 	}
 	
-	public long getSecondsBetween(final Date startDate, final Date endDate) {
+	public static long getSecondsBetween(final Date startDate, final Date endDate) {
 		long diff = Math.abs(endDate.getTime() - startDate.getTime());
 		long secondsBetween = TimeUnit.SECONDS.convert(diff, TimeUnit.MILLISECONDS);
 
@@ -75,7 +76,7 @@ public class DateUtils {
 	 * @param timeInSeconds
 	 * @return
 	 */
-	public String calculateTime(final long timeInSeconds) {
+	public static String calculateTime(final long timeInSeconds) {
 		final long oneMinuteInSec = 60;
 		final long oneHourInSec = 3600;
 		final long oneDayInSec = 86400;
@@ -93,20 +94,20 @@ public class DateUtils {
         return year+"j "+ week+"w "+ day+"d "+ hours+"h "+ minute+"m "+ second+"s ";
     }
 	
-	public String convertCurrentSqlDateToString() {
+	public static String convertCurrentSqlDateToString() {
 		final DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
 		String text = dateFormat.format(getCurrentSqlDate());
 		System.out.println(text);
 		return text;
 	}
 	
-	public java.sql.Date convertUtilDateToSqlDate(Date date){
+	public static java.sql.Date convertUtilDateToSqlDate(Date date){
 		final Date utilDate = toDate(date);
 		final java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 		return sqlDate;
 	}
 	
-	public Time convertUtilDateToSqlTime(Date time){
+	public static Time convertUtilDateToSqlTime(Date time){
 		final Date utilTime = toTime(time);
 		final Time sqlTime = new Time(utilTime.getTime());
 		return sqlTime;
@@ -117,17 +118,17 @@ public class DateUtils {
 	 * 
 	 * @return
 	 */
-	public java.sql.Date getCurrentSqlDate() {
+	public static java.sql.Date getCurrentSqlDate() {
 		final Date date = Calendar.getInstance().getTime();
 		final java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 		return sqlDate;
 	}
-	public Time getCurrentSqlTime() {
+	public static Time getCurrentSqlTime() {
 		final Date date = new Date();
 		final Time sqlTime = new Time(date.getTime());
 		return sqlTime;
 	}
-	public Date getCurrentDate() {
+	public static Date getCurrentDate() {
 		return new Date();
 	}
 	
@@ -137,7 +138,7 @@ public class DateUtils {
 	 * @param date
 	 * @return String "dd MMMMM"
 	 */
-	public String format2(final Date date) {
+	public static String format2(final Date date) {
 	    return date != null ? new SimpleDateFormat(dateMonthFormat).format(date) : "unknown";
 	 }
 	
@@ -147,7 +148,7 @@ public class DateUtils {
 	 * @param date
 	 * @return String "yyyy-MM-dd"
 	 */
-	public String sqlDatabaseFormat(final Date date) {
+	public static String sqlDatabaseFormat(final Date date) {
 	    return date != null ? new SimpleDateFormat(dateFormatSql, Locale.FRANCE).format(date) : "unknown";
 	 }
 	
@@ -158,7 +159,7 @@ public class DateUtils {
 	 * @return String "MM-dd-yyyy"
 	 * @throws ParseException 
 	 */
-	public Date toDateFormat(final String date) throws ParseException {
+	public static Date toDateFormat(final String date) throws ParseException {
 		DateFormat format = new SimpleDateFormat(toDateFormat, Locale.FRANCE);
 		Date dateType = format.parse(date);
 	    return dateType;
@@ -171,7 +172,7 @@ public class DateUtils {
 	 * @return String "MM-dd-yyyy"
 	 * @throws ParseException 
 	 */
-	public Date toTimeFormat(final String time) throws ParseException {
+	public static Date toTimeFormat(final String time) throws ParseException {
 		DateFormat format = new SimpleDateFormat(timeFormat, Locale.FRANCE);
 		Date timeType = format.parse(time);
 	    return timeType;
@@ -183,15 +184,15 @@ public class DateUtils {
 	 * @param time
 	 * @return String "HH:mm:ss"
 	 */
-	public String timeFormat(final Date time) {
+	public static String timeFormat(final Date time) {
 	    return time != null ? new SimpleDateFormat(timeFormat).format(time) : "unknown";
 	}
 	
-	public String getDate() {
+	public static String getDate() {
 		return new SimpleDateFormat("d MMMM, HH:mm").format(new Date());
 	}
 
-	public Date toDateTime(final Date date, final Time time) {
+	public static Date toDateTime(final Date date, final Time time) {
 		final Calendar timeCal = Calendar.getInstance();
 		timeCal.setTime(time);
 		final Calendar cal = Calendar.getInstance();
@@ -203,13 +204,13 @@ public class DateUtils {
 		return cal.getTime();
 	}
 	
-	public Date toDate(final Date date) {
+	public static Date toDate(final Date date) {
 		final Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		return cal.getTime();
 	}
 	
-	public Date toTime(final Date time) {
+	public static Date toTime(final Date time) {
 		final Calendar timeCal = Calendar.getInstance();
 		timeCal.setTime(time);
 		final Calendar cal = Calendar.getInstance();

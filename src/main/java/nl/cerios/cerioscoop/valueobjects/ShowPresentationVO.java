@@ -1,4 +1,4 @@
-package nl.cerios.cerioscoop.ValueObjects;
+package nl.cerios.cerioscoop.valueobjects;
 
 import nl.cerios.cerioscoop.domain.Show;
 

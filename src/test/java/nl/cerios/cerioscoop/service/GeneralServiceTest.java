@@ -11,19 +11,18 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
-import nl.cerios.cerioscoop.ValueObjects.ShowsPresentationVO;
 import nl.cerios.cerioscoop.domain.Customer;
 import nl.cerios.cerioscoop.domain.Movie;
 import nl.cerios.cerioscoop.domain.MovieBuilder;
 import nl.cerios.cerioscoop.domain.Show;
 import nl.cerios.cerioscoop.util.DateUtils;
+import nl.cerios.cerioscoop.valueobjects.ShowsPresentationVO;
 import nl.cerios.testutil.DatabaseTest;
 
 public class GeneralServiceTest extends DatabaseTest {
 
 	@InjectMocks
 	private GeneralService generalService;
-	private final DateUtils dateUtils = new DateUtils();
 
 	@Before
 	public void initMocks() {
@@ -57,14 +56,14 @@ public class GeneralServiceTest extends DatabaseTest {
 	public void testGetFirstShowforToday() throws ParseException{
 	//Shows	
 		final Show showOne = new Show(0, 1, 
-				dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("07-20-2020"))),
-				dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))));
+				DateUtils.convertUtilDateToSqlDate(DateUtils.toDate(DateUtils.toDateFormat("07-20-2020"))),
+				DateUtils.convertUtilDateToSqlTime(DateUtils.toTime(DateUtils.toTimeFormat("20:00:00"))));
 		final Show showTwo = new Show(0, 2, 
-				dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("07-23-2020"))),
-				dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))));
+				DateUtils.convertUtilDateToSqlDate(DateUtils.toDate(DateUtils.toDateFormat("07-23-2020"))),
+				DateUtils.convertUtilDateToSqlTime(DateUtils.toTime(DateUtils.toTimeFormat("20:00:00"))));
 		final Show showThree = new Show(0, 3, 
-				dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("09-03-2020"))),
-				dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))));	
+				DateUtils.convertUtilDateToSqlDate(DateUtils.toDate(DateUtils.toDateFormat("09-03-2020"))),
+				DateUtils.convertUtilDateToSqlTime(DateUtils.toTime(DateUtils.toTimeFormat("20:00:00"))));	
 		
 	//Putting all movies in a list
 		final List<Show> listOfShows = new ArrayList<>();

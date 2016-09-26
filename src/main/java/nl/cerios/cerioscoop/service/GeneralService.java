@@ -15,21 +15,20 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 
-import nl.cerios.cerioscoop.ValueObjects.ShowPresentationVO;
-import nl.cerios.cerioscoop.ValueObjects.ShowsPresentationVO;
 import nl.cerios.cerioscoop.domain.Customer;
 import nl.cerios.cerioscoop.domain.Movie;
 import nl.cerios.cerioscoop.domain.MovieBuilder;
 import nl.cerios.cerioscoop.domain.Show;
 import nl.cerios.cerioscoop.domain.User;
 import nl.cerios.cerioscoop.util.DateUtils;
+import nl.cerios.cerioscoop.valueobjects.ShowPresentationVO;
+import nl.cerios.cerioscoop.valueobjects.ShowsPresentationVO;
 
 @Stateless										//Stateless is de status van de gevulde opjecten. Best Practice is stateless.
 public class GeneralService {
 
 	@Resource(name = "jdbc/cerioscoop")			//Content Dependency Injection techniek
 	private DataSource dataSource;
-	private DateUtils dateUtils = new DateUtils();
 	
 	public List<Movie> getMovies(){
 		final List<Movie> movies = new ArrayList<>();
@@ -104,7 +103,7 @@ public class GeneralService {
 	public Show getFirstShowforToday(final List<Show> listOfShows){
 		Show firstShow = null;	
 		for (final Show show : listOfShows) {
-			if(dateUtils.toDateTime(show.getShowDate(), show.getShowTime()).after(dateUtils.getCurrentSqlTime())){	
+			if(DateUtils.toDateTime(show.getShowDate(), show.getShowTime()).after(DateUtils.getCurrentSqlTime())){	
 				if(firstShow == null){			//hier wordt voor 1x eerstVolgendeFilm gevuld					
 					firstShow = show;
 				}

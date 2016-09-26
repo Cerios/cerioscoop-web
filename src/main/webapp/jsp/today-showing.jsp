@@ -1,4 +1,4 @@
-<%@page import="nl.cerios.cerioscoop.ValueObjects.ShowPresentationVO"%>
+<%@page import="nl.cerios.cerioscoop.valueobjects.ShowPresentationVO"%>
 <%@page import="javax.naming.InitialContext"%>
 <%@page import="nl.cerios.cerioscoop.domain.Movie"%>
 <%@page import="java.util.Comparator"%>
@@ -8,8 +8,7 @@
 <%@page import="java.util.List"%>
 <%@page import="nl.cerios.cerioscoop.domain.Show"%>
 <%@page import="nl.cerios.cerioscoop.service.GeneralService"%>
-<%@page import="nl.cerios.cerioscoop.util.DateUtils"%>
-<%@page import="nl.cerios.cerioscoop.ValueObjects.ShowsPresentationVO"%>
+<%@page import="nl.cerios.cerioscoop.valueobjects.ShowsPresentationVO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -38,8 +37,8 @@
 			<th>Movie times</th>
 		</thead>
 		<tbody>
-			<% for(ShowsPresentationVO showsPresentationVO : (List<ShowsPresentationVO>)request.getAttribute("todaysShowsTable")) { %>
-			<%if(showsPresentationVO != null) { %>
+			<% for(ShowsPresentationVO showsPresentationVO : (List<ShowsPresentationVO>)request.getAttribute("todaysShowsTable")) { 
+			  if(showsPresentationVO != null) { %>
 				<tr>
 					<td>
 					<form method="GET" action="/cerioscoop-web/MoviePresentationServlet">
@@ -47,20 +46,15 @@
 					<input id="<%=showsPresentationVO.getMovie().getMovieId().intValue()%>" class="button" type="submit" value="<%=showsPresentationVO.getMovie().getTitle()%>"></form>
 					</td>
 			
-					<% for(ShowPresentationVO show : showsPresentationVO.getShowsPresentationVO()){ %>
-					<% if(showsPresentationVO.getShowsPresentationVO() != null){ %>
-					<% String soldOut; %>
-					<% if(show.getSoldOut()){soldOut = "*";}else{soldOut ="";}{ %>
+					<% for(ShowPresentationVO show : showsPresentationVO.getShowsPresentationVO()){ 
+					   if(showsPresentationVO.getShowsPresentationVO() != null){ 
+					   String soldOut; 
+					   if(show.getSoldOut()){soldOut = "*";}else{soldOut ="";}{ %>
 					<td><a class="button" href="/cerioscoop-web/#"><%=show.getShow().getShowTime()+soldOut%></a></td>
 					<% }}} %>
 				</tr>
 			<% }} %>
 		</tbody>
 	</table>
-	<p>
-		Today it is ${todays_date} <br />The first movie today:
-		${first_movie_today} <br />That's in ${countdown}
-	</p>
-
 </body>
 </html>
