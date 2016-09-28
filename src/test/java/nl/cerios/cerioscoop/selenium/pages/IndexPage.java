@@ -61,22 +61,22 @@ public class IndexPage {
 		return new CustomerPage(driver);
 	}
 	
-	public MoviePage navigateToMoviePresentation(String movieId){
-		if (theLegendOfTarzan.isDisplayed() && movieId.equals("1")){
+	public MoviePage navigateToMoviePage(String movieId){
+		if (theLegendOfTarzan.isDisplayed() && movieId.equals("movietitlebymovieid1")){
 			theLegendOfTarzan.click();
-		}else if(tarzanTheApeMan.isDisplayed() && movieId.equals("2")){
+		}else if(tarzanTheApeMan.isDisplayed() && movieId.equals("movietitlebymovieid2")){
 			tarzanTheApeMan.click();
 			
-		}else if(weddingCrashers.isDisplayed() && movieId.equals("4")){
+		}else if(weddingCrashers.isDisplayed() && movieId.equals("movietitlebymovieid4")){
 			weddingCrashers.click();
 			
-		}else if(bloodDiamond.isDisplayed() && movieId.equals("5")){
+		}else if(bloodDiamond.isDisplayed() && movieId.equals("movietitlebymovieid5")){
 			bloodDiamond.click();
 			
-		}else if(theLionKing.isDisplayed() && movieId.equals("6")){
+		}else if(theLionKing.isDisplayed() && movieId.equals("movietitlebymovieid6")){
 			theLionKing.click();
 			
-		}else if(snatch.isDisplayed() && movieId.equals("7")){
+		}else if(snatch.isDisplayed() && movieId.equals("movietitlebymovieid7")){
 			snatch.click();
 			
 		}

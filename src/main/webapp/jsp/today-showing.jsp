@@ -18,7 +18,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Now Showing</title>
+<title>Today Showing</title>
 
 <!-- Cerioscoop CSS
    ================================================== -->
@@ -43,14 +43,14 @@
 					<td>
 					<form method="GET" action="/cerioscoop-web/MoviePresentationServlet">
 					<input type="hidden" name="movieId" value=<%=showsPresentationVO.getMovie().getMovieId().intValue()%>>
-					<input id="<%=showsPresentationVO.getMovie().getMovieId().intValue()%>" class="button" type="submit" value="<%=showsPresentationVO.getMovie().getTitle()%>"></form>
+					<input id="movietitlebymovieid<%=showsPresentationVO.getMovie().getMovieId().intValue()%>" class="button" type="submit" value="<%=showsPresentationVO.getMovie().getTitle()%>"></form>
 					</td>
 			
 					<% for(ShowPresentationVO show : showsPresentationVO.getShowsPresentationVO()){ 
 					   if(showsPresentationVO.getShowsPresentationVO() != null){ 
 					   String soldOut; 
 					   if(show.getSoldOut()){soldOut = "*";}else{soldOut ="";}{ %>
-					<td><a class="button" href="/cerioscoop-web/#"><%=show.getShow().getShowTime()+soldOut%></a></td>
+					<td><a id="showtimebyshowid<%=show.getShow().getShowId()%>movieid<%=show.getShow().getMovieId()%>" class="button" href="/cerioscoop-web/#"><%=show.getShow().getShowTime()+soldOut%></a></td>
 					<% }}} %>
 				</tr>
 			<% }} %>
