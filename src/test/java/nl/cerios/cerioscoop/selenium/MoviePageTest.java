@@ -7,12 +7,12 @@ import nl.cerios.cerioscoop.selenium.pages.IndexPage;
 import nl.cerios.cerioscoop.selenium.pages.MoviePage;
 import nl.cerios.testutil.SeleniumTest;
 
-public class MoviePresentationTest extends SeleniumTest {
+public class MoviePageTest extends SeleniumTest {
 	
 	@Test
 	public void shouldNavigateToMoviePresentationOfTheLegendOfTarzan() {
 	    MoviePage moviePage = new IndexPage(getWebDriver())
-	      .navigateToMoviePresentation("1");
+	      .navigateToMoviePage("1");
 	    
 	    Assert.assertNotNull(moviePage);
 	    Assert.assertEquals("MovieTitle: The Legend of Tarzan", moviePage.getMovieTitleFromMoviePage());
@@ -22,7 +22,7 @@ public class MoviePresentationTest extends SeleniumTest {
 	@Test
 	public void shouldNavigateToMoviePresentationOfSnatch() {
 	    MoviePage moviePage = new IndexPage(getWebDriver())
-	      .navigateToMoviePresentation("7");
+	      .navigateToMoviePage("7");
 	    
 	    Assert.assertNotNull(moviePage);
 	    Assert.assertEquals("MovieTitle: Snatch", moviePage.getMovieTitleFromMoviePage());

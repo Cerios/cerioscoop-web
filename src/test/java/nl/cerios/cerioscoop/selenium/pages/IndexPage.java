@@ -25,22 +25,22 @@ public class IndexPage {
 	@FindBy(id = "login-button")
 	private WebElement loginButton;
 	
-	@FindBy(id = "1") //Is movieId
+	@FindBy(id = "movietitlebymovieid1") //Is movieId
 	private WebElement theLegendOfTarzan;
 	
-	@FindBy(id = "2") //Is movieId
+	@FindBy(id = "movietitlebymovieid2") //Is movieId
 	private WebElement tarzanTheApeMan;
 	
-	@FindBy(id = "4") //Is movieId
+	@FindBy(id = "movietitlebymovieid4") //Is movieId
 	private WebElement weddingCrashers;
 	
-	@FindBy(id = "5") //Is movieId
+	@FindBy(id = "movietitlebymovieid5") //Is movieId
 	private WebElement bloodDiamond;
 	
-	@FindBy(id = "6") //Is movieId
+	@FindBy(id = "movietitlebymovieid6") //Is movieId
 	private WebElement theLionKing;
 	
-	@FindBy(id = "7") //Is movieId
+	@FindBy(id = "movietitlebymovieid7") //Is movieId
 	private WebElement snatch;
 
 	// constructor
@@ -62,21 +62,21 @@ public class IndexPage {
 	}
 	
 	public MoviePage navigateToMoviePage(String movieId){
-		if (theLegendOfTarzan.isDisplayed() && movieId.equals("movietitlebymovieid1")){
+		if (theLegendOfTarzan.isDisplayed() && movieId.equals("1")){
 			theLegendOfTarzan.click();
-		}else if(tarzanTheApeMan.isDisplayed() && movieId.equals("movietitlebymovieid2")){
+		}else if(tarzanTheApeMan.isDisplayed() && movieId.equals("2")){
 			tarzanTheApeMan.click();
 			
-		}else if(weddingCrashers.isDisplayed() && movieId.equals("movietitlebymovieid4")){
+		}else if(weddingCrashers.isDisplayed() && movieId.equals("4")){
 			weddingCrashers.click();
 			
-		}else if(bloodDiamond.isDisplayed() && movieId.equals("movietitlebymovieid5")){
+		}else if(bloodDiamond.isDisplayed() && movieId.equals("5")){
 			bloodDiamond.click();
 			
-		}else if(theLionKing.isDisplayed() && movieId.equals("movietitlebymovieid6")){
+		}else if(theLionKing.isDisplayed() && movieId.equals("6")){
 			theLionKing.click();
 			
-		}else if(snatch.isDisplayed() && movieId.equals("movietitlebymovieid7")){
+		}else if(snatch.isDisplayed() && movieId.equals("7")){
 			snatch.click();
 			
 		}
