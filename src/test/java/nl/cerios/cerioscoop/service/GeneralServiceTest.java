@@ -23,6 +23,12 @@ public class GeneralServiceTest extends DatabaseTest {
 
 	@InjectMocks
 	private GeneralService generalService;
+	
+	@InjectMocks
+	private GenericDaoImpl genericDao;
+	
+	@InjectMocks
+	private CustomerDaoImpl customerDao;
 
 	@Before
 	public void initMocks() {
@@ -31,14 +37,14 @@ public class GeneralServiceTest extends DatabaseTest {
 	
 	@Test
 	public void testGetMovies() {
-		final List<Movie> movies = generalService.getMovies();
+		final List<Movie> movies = genericDao.getMovies();
 		Assert.assertNotNull(movies);
 		Assert.assertEquals(7, movies.size());
 	}
 	
 	@Test
 	public void testGetShows() {
-		final List<Show> shows = generalService.getShows();
+		final List<Show> shows = genericDao.getShows();
 
 		Assert.assertNotNull(shows);
 		Assert.assertEquals(7, shows.size());
@@ -46,7 +52,7 @@ public class GeneralServiceTest extends DatabaseTest {
 		
 	@Test
 	public void testGetCustomers() {
-		final List<Customer> customers = generalService.getCustomers();
+		final List<Customer> customers = customerDao.getCustomers();
 
 		Assert.assertNotNull(customers);
 		Assert.assertEquals(3, customers.size());
@@ -115,7 +121,7 @@ public class GeneralServiceTest extends DatabaseTest {
 		final Customer customerBefore = getCustomer(idOfCustomerToBeRegistered);
 		Assert.assertNull(customerBefore);
 		
-		generalService.registerCustomer(customerOne);
+		customerDao.registerCustomer(customerOne);
 
 		final Customer customerAfter = getCustomer(idOfCustomerToBeRegistered);
 		Assert.assertNotNull(customerAfter);
@@ -176,8 +182,8 @@ public class GeneralServiceTest extends DatabaseTest {
 		List<ShowsPresentationVO> filledTodaysShowsTable = new ArrayList<ShowsPresentationVO>();	
 		
 		//Tweede unittest: lijsten maken met derby vulling After
-			final List<Show> shows = generalService.getShows();
-			final List<Movie> movies = generalService.getMovies();	
+			final List<Show> shows = genericDao.getShows();
+			final List<Movie> movies = genericDao.getMovies();	
 			
 		//de todaysShowsTable vullen met de lege shows en movies.
 			filledTodaysShowsTable = generalService.generateShowTable(shows, movies);	
@@ -229,7 +235,7 @@ public class GeneralServiceTest extends DatabaseTest {
 	
 	
 	private Customer getCustomer(final int customerID) {
-		return generalService.getCustomers().stream()
+		return customerDao.getCustomers().stream()
 				.filter(c -> c.getCustomerId() == customerID)
 				.findAny()
 				.orElse(null);

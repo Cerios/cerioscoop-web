@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import nl.cerios.cerioscoop.domain.Customer;
 import nl.cerios.cerioscoop.domain.ErrorMessage;
 import nl.cerios.cerioscoop.domain.RegisterAttributes;
+import nl.cerios.cerioscoop.service.CustomerDaoImpl;
 import nl.cerios.cerioscoop.service.CustomerService;
 import nl.cerios.cerioscoop.service.GeneralService;
 
@@ -26,6 +27,9 @@ public class RegisterServlet extends HttpServlet {
 
 	@EJB
 	private GeneralService generalService;
+	
+	@EJB
+	private CustomerDaoImpl customerDao;
 
 	@EJB
 	private CustomerService customerService;
@@ -93,7 +97,7 @@ public class RegisterServlet extends HttpServlet {
 		}
 		if (customer.getFirstName() != null && customer.getLastName() != null && customer.getUsername() != null
 				&& customer.getPassword() != null && customer.getEmail() != null) {
-			generalService.registerCustomer(customer);
+			customerDao.registerCustomer(customer);
 			session.setAttribute("user", customer);
 		}
 

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import nl.cerios.cerioscoop.domain.Movie;
-import nl.cerios.cerioscoop.service.DataAccessObject;
+import nl.cerios.cerioscoop.service.GenericDaoImpl;
 
 /**
  * Servlet implementation class MovieServlet
@@ -20,7 +20,7 @@ public class MoviePresentationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	@EJB // call DB
-	private DataAccessObject dao;
+	private GenericDaoImpl dao;
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

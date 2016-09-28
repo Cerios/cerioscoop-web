@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import nl.cerios.cerioscoop.domain.Customer;
 import nl.cerios.cerioscoop.domain.User;
+import nl.cerios.cerioscoop.service.CustomerDaoImpl;
 import nl.cerios.cerioscoop.service.GeneralService;
 
 /**
@@ -25,6 +26,9 @@ public class LoginServlet extends HttpServlet {
 
 	@EJB
 	private GeneralService generalService;
+	
+	@EJB
+	private CustomerDaoImpl customerDao;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("successfulRegistry", "");
@@ -34,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		final List<Customer> dbCustomers = generalService.getCustomers();
+		final List<Customer> dbCustomers = customerDao.getCustomers();
 		final User customer = new Customer();
 		final User authenticatedCustomer;
 		final HttpSession session = request.getSession();

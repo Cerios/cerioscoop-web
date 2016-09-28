@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import nl.cerios.cerioscoop.domain.Transaction;
 import nl.cerios.cerioscoop.domain.User;
-import nl.cerios.cerioscoop.service.DataAccessObject;
+import nl.cerios.cerioscoop.service.CustomerDaoImpl;
 
 /**
  * Servlet implementation class TransactionServlet
@@ -22,9 +22,9 @@ import nl.cerios.cerioscoop.service.DataAccessObject;
 @WebServlet("/TransactionServlet")
 public class TransactionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	@EJB // call DB
-	private DataAccessObject dao;
+	
+	@EJB 
+	private CustomerDaoImpl customerDao;
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,7 +36,7 @@ public class TransactionServlet extends HttpServlet {
 		System.out.println(customer);
 		String a = customer.getUsername();
 		System.out.println(a);
-		transactions = dao.getTransactionByUsername(a);
+		transactions = customerDao.getTransactionByUsername(a);
 		request.setAttribute("transactions", transactions);
 		getServletContext().getRequestDispatcher("/jsp/transactions.jsp").forward(request, response);
 		}
