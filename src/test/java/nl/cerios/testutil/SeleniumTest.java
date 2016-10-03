@@ -10,7 +10,7 @@ import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public abstract class SeleniumTest {
+public abstract class SeleniumTest extends DatabaseTest {
 
 	public static final String BASE_URL = "http://localhost:9080/cerioscoop-web";
 

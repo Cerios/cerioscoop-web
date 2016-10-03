@@ -176,7 +176,7 @@ public class GeneralServiceTest extends DatabaseTest {
 		Assert.assertEquals(emptyTodaysShowsTable, generalService.generateShowTable(testShows, testMovies));
 		Assert.assertEquals(0, emptyTodaysShowsTable.size());
 	}
-	
+		
 	@Test 
 	public void testGenerateShowTableWithDerbyShowsAndMovies() throws ParseException, MovieNotFoundException {		
 		List<ShowsPresentationVO> filledTodaysShowsTable = new ArrayList<ShowsPresentationVO>();	
@@ -215,22 +215,26 @@ public class GeneralServiceTest extends DatabaseTest {
 				}
 			}
 			Assert.assertEquals(filledTodaysShowsTable.size(), generalService.generateShowTable(shows, movies).size());
-			Assert.assertEquals(4, filledTodaysShowsTable.size());
+			Assert.assertEquals(6, filledTodaysShowsTable.size());
 			Assert.assertEquals(1, TheLegendOfTarzan.getMovie().getMovieId().intValue());
-			Assert.assertEquals("The Legend of Tarzan (2016)", TheLegendOfTarzan.getMovie().getTitle());
+			Assert.assertEquals("The Legend of Tarzan", TheLegendOfTarzan.getMovie().getTitle());
 			Assert.assertEquals(1, TheLegendOfTarzan.getShowsPresentationVO().size());				
 			Assert.assertEquals(2, TarzanTheApeMan.getMovie().getMovieId().intValue());
-			Assert.assertEquals("Tarzan the Ape Man (1932)", TarzanTheApeMan.getMovie().getTitle());
-			Assert.assertEquals(3, TarzanTheApeMan.getShowsPresentationVO().size());
+			Assert.assertEquals("Tarzan the Ape Man", TarzanTheApeMan.getMovie().getTitle());
+			Assert.assertEquals(1, TarzanTheApeMan.getShowsPresentationVO().size());
 			Assert.assertEquals(4, WeddingCrashers.getMovie().getMovieId().intValue());
 			Assert.assertEquals("Wedding Crashers", WeddingCrashers.getMovie().getTitle());
-			Assert.assertEquals(1, WeddingCrashers.getShowsPresentationVO().size());
+			Assert.assertEquals(2, WeddingCrashers.getShowsPresentationVO().size());
 			Assert.assertEquals(5, BloodDiamond.getMovie().getMovieId().intValue());
 			Assert.assertEquals("Blood Diamond", BloodDiamond.getMovie().getTitle());
-			Assert.assertEquals(2, BloodDiamond.getShowsPresentationVO().size());
+			Assert.assertEquals(1, BloodDiamond.getShowsPresentationVO().size());
+			Assert.assertEquals(6, TheLionKing.getMovie().getMovieId().intValue());
+			Assert.assertEquals("The Lion King", TheLionKing.getMovie().getTitle());
+			Assert.assertEquals(1, TheLionKing.getShowsPresentationVO().size());
+			Assert.assertEquals(7, Snatch.getMovie().getMovieId().intValue());
+			Assert.assertEquals("Snatch", Snatch.getMovie().getTitle());
+			Assert.assertEquals(1, Snatch.getShowsPresentationVO().size());
 			Assert.assertNull(Tarzan);
-			Assert.assertNull(TheLionKing);
-			Assert.assertNull(Snatch);
 		}
 	
 	

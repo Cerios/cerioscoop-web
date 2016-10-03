@@ -29,7 +29,7 @@ public class TransactionTest extends SeleniumTest{
 	 	
 	    Assert.assertEquals("Wedding Crashers", movieTitle);
         Assert.assertEquals("blue room", roomName);
-	    Assert.assertEquals("2016-09-28", showDate);
+	    Assert.assertEquals("2016-10-04", showDate);
 	    Assert.assertEquals("16:00:00", showTime);
 	    Assert.assertEquals("3", reservedChairs);
 	}

@@ -41,9 +41,9 @@
 			  if(showsPresentationVO != null) { %>
 				<tr>
 					<td>
-					<form method="GET" action="/cerioscoop-web/MoviePresentationServlet">
-					<input type="hidden" name="movieId" value=<%=showsPresentationVO.getMovie().getMovieId().intValue()%>>
-					<input id="movietitlebymovieid<%=showsPresentationVO.getMovie().getMovieId().intValue()%>" class="button" type="submit" value="<%=showsPresentationVO.getMovie().getTitle()%>"></form>
+						<form method="GET" action="/cerioscoop-web/MoviePresentationServlet">
+						<input type="hidden" name="movieId" value=<%=showsPresentationVO.getMovie().getMovieId().intValue()%>>
+						<input id="movietitlebymovieid<%=showsPresentationVO.getMovie().getMovieId().intValue()%>" class="button" type="submit" value="<%=showsPresentationVO.getMovie().getTitle()%>"></form>
 					</td>
 			
 					<% for(ShowPresentationVO show : showsPresentationVO.getShowsPresentationVO()){ 
