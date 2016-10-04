@@ -1,4 +1,4 @@
-package nl.cerios.cerioscoop.domain;
+package nl.cerios.cerioscoop.helper;
 
 public class RegisterAttributes {
 	

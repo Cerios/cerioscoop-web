@@ -8,6 +8,9 @@ public abstract class User {
 	private String password;
 	private String email;
 	
+	/**
+	 * Moet deze parent class niet in een aparte package staan? Is het misschien een nl.cerios.cerioscoop.OOHelper package?
+	 */
 	public User(){
 	}
 	public User(String firstName, String lastName, String username, String password,

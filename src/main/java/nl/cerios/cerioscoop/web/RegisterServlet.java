@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import nl.cerios.cerioscoop.domain.Customer;
-import nl.cerios.cerioscoop.domain.ErrorMessage;
-import nl.cerios.cerioscoop.domain.RegisterAttributes;
+import nl.cerios.cerioscoop.helper.ErrorMessage;
+import nl.cerios.cerioscoop.helper.RegisterAttributes;
 import nl.cerios.cerioscoop.service.CustomerDaoImpl;
 import nl.cerios.cerioscoop.service.CustomerService;
 import nl.cerios.cerioscoop.service.GeneralService;
