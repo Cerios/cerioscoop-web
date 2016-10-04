@@ -50,7 +50,7 @@
 					   if(showsPresentationVO.getShowsPresentationVO() != null){ 
 					   String soldOut; 
 					   if(show.getSoldOut()){soldOut = "*";}else{soldOut ="";}{ %>
-					<td><a id="showtimebyshowid<%=show.getShow().getShowId()%>movieid<%=show.getShow().getMovie().getMovieId().intValue()%>" class="button" href="/cerioscoop-web/#"><%=show.getShow().getShowTime()+soldOut%></a></td>
+					<td><a id="showtimebyshowid<%=show.getShow().getShowId()%>movieid<%=show.getShow().getMovie().getMovieId().intValue()%>" class="button" href="/cerioscoop-web/BuyTicketServlet"><%=show.getShow().getShowTime()+soldOut%></a></td>
 					<% }}} %>
 				</tr>
 			<% }} %>
