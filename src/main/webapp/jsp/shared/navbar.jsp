@@ -58,7 +58,7 @@
 			</div>
 			<% } %>
 		           	<div class="navbar-button"><span>
-			<%	if(session.getAttribute("user") !=null) { User customer = (User) session.getAttribute("user"); out.println("Logged in as: "+customer.getUsername());} %>
+			<%	if(session.getAttribute("user") !=null) { User customer = (User) session.getAttribute("user"); out.println("LOGGED IN AS: "+customer.getUsername());} %>
 		</span>
 			</div>
 		

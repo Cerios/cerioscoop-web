@@ -48,11 +48,6 @@
 		<%	} %>
 		</tbody>
 	</table>
-	
-	<div>
-		<form action="/cerioscoop-web/LoginServlet">
-			<input type="submit" value="Cancel" />
-		</form>
-	</div>
+
 </body>
 </html>
