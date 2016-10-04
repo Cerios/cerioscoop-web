@@ -1,12 +1,10 @@
 package nl.cerios.cerioscoop.service;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,32 +136,6 @@ public class CustomerDaoImpl{
 		}
 	}
 	
-	public Show getShowByShowId(int show_id) {
-		Show show = new Show();
-		String selectSQL = "SELECT movie_title, show_date, show_time FROM show_presentation WHERE show_id = ?";
-
-		try (final Connection connection = dataSource.getConnection()) {
-			final PreparedStatement preparedstatement = connection.prepareStatement(selectSQL);
-			preparedstatement.setInt(1, show_id);
-			ResultSet resultSet = preparedstatement.executeQuery();{
-				while (resultSet.next()) {
-				final int showId = show_id;
-				final int movieId = resultSet.getInt("movie_id");
-				final int roomId = resultSet.getInt("room_id");
-				final Date showDate = resultSet.getDate("show_date");
-				final Time showTime = resultSet.getTime("show_time");
-				final int availablePlaces = resultSet.getInt("available_places");
-				final float showPrice = resultSet.getInt("show_price");
-				
-	        	show = new Show(showId, movieId, roomId, showDate, showTime, availablePlaces, showPrice);
-	        	}
-	        return show;
-			   }
-	    }catch (final SQLException e) {
-	    	throw new ServiceException("Something went terribly wrong while retrieving the first date.", e);
-	    }
-	}
-
 	public boolean isUniqueUser(String user) {
 		String SQL = "SELECT username FROM customer where username=?";
 		try (final Connection connection = dataSource.getConnection()) {
@@ -182,5 +154,4 @@ public class CustomerDaoImpl{
 		}
 
 	}
-
 }

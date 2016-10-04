@@ -60,14 +60,16 @@ public class GeneralServiceTest extends DatabaseTest {
 	
 	@Test
 	public void testGetFirstShowforToday() throws ParseException{
+	//Movie for the shows
+		final Movie movie = new MovieBuilder().withMovieTitle("LekkereMovie").build();
 	//Shows	
-		final Show showOne = new Show(0, 1, 
+		final Show showOne = new Show(0, movie, 
 				DateUtils.convertUtilDateToSqlDate(DateUtils.toDate(DateUtils.toDateFormat("07-20-2020"))),
 				DateUtils.convertUtilDateToSqlTime(DateUtils.toTime(DateUtils.toTimeFormat("20:00:00"))));
-		final Show showTwo = new Show(0, 2, 
+		final Show showTwo = new Show(0, movie, 
 				DateUtils.convertUtilDateToSqlDate(DateUtils.toDate(DateUtils.toDateFormat("07-23-2020"))),
 				DateUtils.convertUtilDateToSqlTime(DateUtils.toTime(DateUtils.toTimeFormat("20:00:00"))));
-		final Show showThree = new Show(0, 3, 
+		final Show showThree = new Show(0, movie, 
 				DateUtils.convertUtilDateToSqlDate(DateUtils.toDate(DateUtils.toDateFormat("09-03-2020"))),
 				DateUtils.convertUtilDateToSqlTime(DateUtils.toTime(DateUtils.toTimeFormat("20:00:00"))));	
 		

@@ -1,6 +1,7 @@
 package nl.cerios.cerioscoop.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -81,7 +82,7 @@ public class GeneralService {
 		for (Show todaysShow : shows) {
 			ShowsPresentationVO existingShowsPresentationVORow = null; // checkt of de movie van de huidige tabel al is opgenomen
 			for (ShowsPresentationVO showsRowIter : todaysShowsTable) {
-				if (todaysShow.getMovieId() == showsRowIter.getMovie().getMovieId().intValue()) {// hier bestaat de movie al in de index
+				if (todaysShow.getMovie().getMovieId() == showsRowIter.getMovie().getMovieId()) {// hier bestaat de movie al in de index
 					ShowPresentationVO newShowPresentationVO = new ShowPresentationVO();
 					newShowPresentationVO.setShow(todaysShow);
 					newShowPresentationVO.setSoldOut(checkIfThereAreNoAvailablePlaces(todaysShow.getAvailablePlaces()));			
@@ -97,7 +98,7 @@ public class GeneralService {
 				ShowsPresentationVO newShowsPresentationRowVO = new ShowsPresentationVO();			
 				List<ShowPresentationVO> showPresentationVOList = new ArrayList<ShowPresentationVO>();
 				showPresentationVOList.add(newShowPresentationVO);
-				newShowsPresentationRowVO.setMovie(getMovieByMovieId(todaysShow.getMovieId(), movies));
+				newShowsPresentationRowVO.setMovie(getMovieByMovieId(todaysShow.getMovie().getMovieId().intValue(), movies));
 				newShowsPresentationRowVO.setShowsPresentationVO(showPresentationVOList);
 				todaysShowsTable.add(newShowsPresentationRowVO);
 			}
@@ -105,15 +106,44 @@ public class GeneralService {
 		return todaysShowsTable;
 	}
 	
+	
+	public class CustomComparator implements Comparator<Show> { 
+		
+		@Override
+	    public int compare(Show o1, Show o2) {
+	        int compare;
+	        	compare = o1.getShowDate().compareTo(o2.getShowDate()); //vergelijk criteria 1
+	        
+	        if (compare == 0) {
+				compare = o1.getShowTime().compareTo(o2.getShowTime()); //vergelijk criteria 2
+	        }
+			return compare;
+		}			
+		
+		public List<Show> sorteren(List<Show> shows, Integer io){
+			if(io == 0){
+				
+			}
+			else if(io > 0) { //move up
+			    Show showToMove = shows.get(io);
+			    shows.set(io, shows.get(io-1));
+			    shows.set(io-1, showToMove);
+			}
+			return shows;
+		}
+		
+	}
+		
 	public List<ShowsPresentationVO> createTodaysShowsTable(){
 		final List<Show> shows = genericDao.getShowsForToday();
 		final List<Movie> movies = genericDao.getMovies();
 		List<ShowsPresentationVO> todaysShowsTable = null;
 		
 		shows.sort((itemL, itemR) -> {
-			int compare = itemL.getShowDate().compareTo(itemR.getShowDate());
+			int compare = itemL.getShowDate().compareTo(itemR.getShowDate());// hier komt een 1 als > een 0 als = of een -1 als < dan uit voor het criteria ShowDate
+			
 			if (compare == 0) {
-				compare = itemL.getShowTime().compareTo(itemR.getShowTime());
+				compare = itemL.getShowTime().compareTo(itemR.getShowTime());// hier ga je bij gelijke ShowDates(0) de ShowTime vergelijken
 			}
 			return compare;
 		});

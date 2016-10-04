@@ -75,14 +75,15 @@ public class GenericDaoImpl{
 			final ResultSet resultSet = statement.executeQuery("SELECT show_id, movie_id, room_id, show_date, show_time, available_places, show_price FROM show_table"); { 
 			while (resultSet.next()) {
 				final int showId = resultSet.getInt("show_id");
-				final int movieId = resultSet.getInt("movie_id");
-				final int roomId = resultSet.getInt("room_id");
+				final Movie movie = new MovieBuilder().withMovieId(resultSet.getBigDecimal("movie_id").toBigInteger()).build();
+				Room room = new Room();
+				room.setRoomId(resultSet.getInt("room_id"));
 				final Date showDate = resultSet.getDate("show_date");
 				final Time showTime = resultSet.getTime("show_time");
 				final int availablePlaces = resultSet.getInt("available_places");
 				final float showPrice = resultSet.getInt("show_price");
 				
-	        	shows.add(new Show(showId, movieId, roomId, showDate, showTime, availablePlaces, showPrice));
+	        	shows.add(new Show(showId, movie, room, showDate, showTime, availablePlaces, showPrice));
 	        	}
 	        return shows;
 	      }
@@ -100,11 +101,11 @@ public class GenericDaoImpl{
 
 			while (resultSet.next()) {
 				final int showId = resultSet.getInt("show_id");
-				final int movieId = resultSet.getInt("movie_id");
+				final Movie movie = new MovieBuilder().withMovieId(resultSet.getBigDecimal("movie_id").toBigInteger()).build();
 				final Date showDate = resultSet.getDate("show_date");
 				final Time showTime = resultSet.getTime("show_time");
 				final int availablePlaces = resultSet.getInt("available_places");
-				shows.add(new Show(showId, movieId, showDate, showTime, availablePlaces));
+				shows.add(new Show(showId, movie, showDate, showTime, availablePlaces));
         	}
         return shows;
 	      }
