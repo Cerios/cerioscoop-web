@@ -2,6 +2,10 @@ package nl.cerios.cerioscoop.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -16,6 +20,7 @@ import nl.cerios.cerioscoop.domain.Customer;
 import nl.cerios.cerioscoop.domain.User;
 import nl.cerios.cerioscoop.service.CustomerDaoImpl;
 import nl.cerios.cerioscoop.service.GeneralService;
+import nl.cerios.cerioscoop.service.SecurityService;
 
 /**
  * Servlet implementation class LoginServlet
@@ -47,7 +52,8 @@ public class LoginServlet extends HttpServlet {
 
 		// input
 		customer.setUsername(request.getParameter("txtUserName"));
-		customer.setPassword(request.getParameter("txtPassword"));
+		customer.setPassword(SecurityService.hashPassword(request.getParameter("txtPassword")));
+		
 
 		// output
 		authenticatedCustomer = generalService.authenticateCustomer(customer, dbCustomers);

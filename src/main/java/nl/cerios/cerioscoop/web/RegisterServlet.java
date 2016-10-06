@@ -17,6 +17,7 @@ import nl.cerios.cerioscoop.helper.RegisterAttributes;
 import nl.cerios.cerioscoop.service.CustomerDaoImpl;
 import nl.cerios.cerioscoop.service.CustomerService;
 import nl.cerios.cerioscoop.service.GeneralService;
+import nl.cerios.cerioscoop.service.SecurityService;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -24,6 +25,19 @@ import nl.cerios.cerioscoop.service.GeneralService;
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private static final int NAME_MIN_SIZE = 8;
+	private static final int NAME_MAX_SIZE = 20;
+	private static final String FIRSTNAME_VALIDATION_MESSAGE = "Invalid firstname: min "+NAME_MIN_SIZE+" / max "+NAME_MAX_SIZE+" alfanumeric characters";
+	private static final String LASTNAME_VALIDATION_MESSAGE = "Invalid lastname: min "+NAME_MIN_SIZE+" / max "+NAME_MAX_SIZE+" alfanumeric characters";
+	private static final String USERNAME_VALIDATION_MESSAGE = "Invalid Username: min "+NAME_MIN_SIZE+" / max "+NAME_MAX_SIZE+" alfanumeric characters";
+	
+	private static final int PASSWORD_MIN_SIZE = 6;
+	private static final int PASSWORD_MAX_SIZE = 12;
+	private static final String PASSWORD_VALIDATION_MESSAGE = "Invalid username/password combination";
+	
+	private static final int EMAIL_MIN_SIZE = 6;
+	private static final String EMAIL_VALIDATION_MESSAGE = "Enter valid email (min 6 characters)";
 
 	@EJB
 	private GeneralService generalService;
@@ -62,39 +76,47 @@ public class RegisterServlet extends HttpServlet {
 		registerAttributes.setUsername(request.getParameter("username"));
 		registerAttributes.setEmail(request.getParameter("email"));
 		
-		if (request.getParameter("firstname").length() >= 8 && request.getParameter("firstname").length() <= 20
-				&& alfanumeric.matcher(request.getParameter("firstname")).find()) {
-			customer.setFirstName(request.getParameter("firstname"));
+		// Is it a valid firstname?
+		final String firstname = request.getParameter("firstname");
+		if (alfanumeric.matcher(firstname).find() && theRightSize(firstname, NAME_MIN_SIZE, NAME_MAX_SIZE)) {
+			customer.setFirstName(firstname);
 		} else {
-			errorMessage.setFirstnameError("Invalid firstname: min 8 / max 20 alfanumeric characters"); 
+			errorMessage.setFirstnameError(FIRSTNAME_VALIDATION_MESSAGE); 
 		}
 
-		if (request.getParameter("lastname").length() >= 8 && request.getParameter("lastname").length() <= 20
-				&& alfanumeric.matcher(request.getParameter("lastname")).find()) {
-			customer.setLastName(request.getParameter("lastname"));
+		// Is it a valid lastname?
+		final String lastname = request.getParameter("lastname");
+		if (alfanumeric.matcher(lastname).find() && theRightSize(lastname, NAME_MIN_SIZE, NAME_MAX_SIZE)) {
+			customer.setLastName(lastname);
 		} else {
-			errorMessage.setLastnameError("Invalid lastname: min 8 / max 20 alfanumeric characters");
+			errorMessage.setLastnameError(LASTNAME_VALIDATION_MESSAGE);
 		}
-		if (request.getParameter("username").length() >= 8 && request.getParameter("username").length() <= 20) {
-			customer.setUsername(request.getParameter("username"));
+		
+		// Is it a valid username?
+		final String username = request.getParameter("username");
+		if (alfanumeric.matcher(username).find() && theRightSize(username, NAME_MIN_SIZE, NAME_MAX_SIZE)) {
+			customer.setUsername(username);
 		} else {
-			errorMessage.setUsernameError("Username invalid: min 8 / max 20 alfanumeric characters");
+			errorMessage.setUsernameError(USERNAME_VALIDATION_MESSAGE);
+		}
+		
+		// Is it a valid password?
+		final String password = request.getParameter("password");
+		final String password2 = request.getParameter("password2");
+		if (password.equals(password2) && punctuation.matcher(password).find() && theRightSize(password, PASSWORD_MIN_SIZE, PASSWORD_MAX_SIZE)) {
+			customer.setPassword(SecurityService.hashPassword(password));
+		} else {
+			errorMessage.setPasswordError(PASSWORD_VALIDATION_MESSAGE);
 		}
 
-		if (request.getParameter("password").length() >= 6 && request.getParameter("password").length() <= 12
-				&& request.getParameter("password").equals(request.getParameter("password2"))
-				&& punctuation.matcher(request.getParameter("password")).find()) {
-			customer.setPassword(request.getParameter("password"));
+		// Is it a valid e-mail?
+		final String email = request.getParameter("email");
+		if (email.length() >= EMAIL_MIN_SIZE && email.contains("@")) {
+			customer.setEmail(email);
 		} else {
-			errorMessage.setPasswordError("Invalid username/password combination");
+			errorMessage.setEmailError(EMAIL_VALIDATION_MESSAGE); 
 		}
-
-		if (request.getParameter("email").length() >= 6 && request.getParameter("email").contains("@")) {
-			customer.setEmail(request.getParameter("email"));
-		} else {
-
-			errorMessage.setEmailError("Enter valid email (min 6 characters)"); 
-		}
+		
 		if (customer.getFirstName() != null && customer.getLastName() != null && customer.getUsername() != null
 				&& customer.getPassword() != null && customer.getEmail() != null) {
 			customerDao.registerCustomer(customer);
@@ -107,9 +129,7 @@ public class RegisterServlet extends HttpServlet {
 			request.setAttribute("errorMessage", errorMessage);
 			request.setAttribute("registerAttributes", registerAttributes);
 			getServletContext().getRequestDispatcher("/jsp/register.jsp").forward(request, response);
-			//request.getRequestDispatcher("/jsp/register.jsp").forward(request, response);
 		} else {
-			
 			session.setAttribute("user", customer);
 			session.setAttribute("usertype", "customer");
 			successfulRegistry = "Welcome, your registry has been processed!";
@@ -118,6 +138,10 @@ public class RegisterServlet extends HttpServlet {
 			request.getRequestDispatcher("/jsp/customer.jsp").forward(request, response);
 			// change link to the correct page after valid registration
 		}
+	}
+	
+	private boolean theRightSize(final String input, final int min, final int max ){
+		return (input.length() >= min && input.length() <= max);
 	}
 
 }

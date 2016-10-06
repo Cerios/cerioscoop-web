@@ -1,5 +1,9 @@
 Manifest-Version: 1.0
+Implementation-Title: cerioscoop-web
+Implementation-Version: 0.0.2-SNAPSHOT
 Built-By: rvvelzen
+Implementation-Vendor-Id: nl.cerios.training
+Build-Time: 2016-10-06T08:30:53Z
 Build-Jdk: 1.8.0_101
 Created-By: Maven Integration for Eclipse
 
