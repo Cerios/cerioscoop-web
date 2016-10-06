@@ -3,7 +3,7 @@ Implementation-Title: cerioscoop-web
 Implementation-Version: 0.0.2-SNAPSHOT
 Built-By: rvvelzen
 Implementation-Vendor-Id: nl.cerios.training
-Build-Time: 2016-10-06T12:15:19Z
+Build-Time: 2016-10-06T12:35:05Z
 Build-Jdk: 1.8.0_101
 Created-By: Maven Integration for Eclipse
 
