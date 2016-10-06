@@ -12,12 +12,8 @@ public class SecurityService {
 			byte[] digest = messageDigest.digest();
 	
 			return String.format("%064x", new java.math.BigInteger(1, digest));
-		}catch(final NoSuchAlgorithmException e){
-			//TODO print message with the logger
-			return null;
-		}catch(final UnsupportedEncodingException e){
-			//TODO print message with the logger
-			return null;
+		}catch(final NoSuchAlgorithmException | UnsupportedEncodingException e){
+			 throw new RuntimeException( e );
 		}
 	}
 }
