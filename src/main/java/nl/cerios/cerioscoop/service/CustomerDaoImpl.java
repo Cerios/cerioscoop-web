@@ -12,6 +12,9 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import nl.cerios.cerioscoop.domain.Customer;
 import nl.cerios.cerioscoop.domain.Movie;
 import nl.cerios.cerioscoop.domain.MovieBuilder;
@@ -21,6 +24,8 @@ import nl.cerios.cerioscoop.domain.Transaction;
 
 @Stateless
 public class CustomerDaoImpl{
+
+	private static final Logger LOG = LoggerFactory.getLogger(CustomerDaoImpl.class);
 
 	@Resource(name = "jdbc/cerioscoop")
 	private DataSource dataSource;
@@ -61,7 +66,7 @@ public class CustomerDaoImpl{
 	        	preparedStatement.setString(5, customer.getEmail());
 	        	preparedStatement.executeUpdate();
 	        	
-	        	System.out.println("Data inserted.");
+	        	LOG.debug("Data inserted.");
 		    }catch (final SQLException e) {
 		    	throw new ServiceException("Something went wrong while inserting the customer items.", e);
 		    }
@@ -96,7 +101,7 @@ public class CustomerDaoImpl{
 					transactions.add(transaction);
 					//todo rest of code
 				}
-				 System.out.println("Transaction(s) retrieved.");
+				LOG.debug("Transaction(s) retrieved.");
 				return transactions;
 			}
       
@@ -112,7 +117,7 @@ public class CustomerDaoImpl{
             preparedStatement.setString(1, username);
             preparedStatement.executeUpdate();
                 
-            System.out.println("Customer is deleted.");
+            LOG.debug("Customer is deleted.");
         }catch (final SQLException e) {
             throw new ServiceException("Something went wrong while deleting the customer items.", e);
         }
@@ -130,7 +135,7 @@ public class CustomerDaoImpl{
 			preparedStatement.setInt(2, showingId);
 			preparedStatement.executeUpdate();
 
-			System.out.println("Chairs_sold is updated.");
+			LOG.debug("Chairs_sold is updated.");
 		} catch (final SQLException e) {
 			throw new ServiceException("Something went wrong while updating the chairsSoldAmount.", e);
 		}

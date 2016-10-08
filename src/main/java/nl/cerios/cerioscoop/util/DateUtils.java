@@ -9,6 +9,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author rsanders
  * 
@@ -17,6 +20,8 @@ import java.util.concurrent.TimeUnit;
  *  http://joda-time.sourceforge.net/quickstart.html
  */
 public final class DateUtils {
+
+	private static final Logger LOG = LoggerFactory.getLogger(DateUtils.class);
 	
 	private static final String dateMonthFormat = "dd MMMMM";
 	private static final String dateFormatSql = "yyyy-MM-dd";
@@ -69,9 +74,9 @@ public final class DateUtils {
 	 * int days = (int) (TimeUnit.SECONDS.toDays(seconds) - 7 * weeks);
 	 * long hours = TimeUnit.SECONDS.toHours(seconds) - TimeUnit.DAYS.toHours(days) - TimeUnit.DAYS.toHours(7*weeks);
 	 * long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
-	 * System.out.println(weeks+"w "+days+"d "+hours+"h "+minutes+"m");
-	 * System.out.println((double)(167245806 % 604800) / 86400);
-	 * System.out.println((int) Math.ceil(3.35 / 1.0));
+	 * LOG.debug(weeks+"w "+days+"d "+hours+"h "+minutes+"m");
+	 * LOG.debug((double)(167245806 % 604800) / 86400);
+	 * LOG.debug((int) Math.ceil(3.35 / 1.0));
 	 * 
 	 * @param timeInSeconds
 	 * @return
@@ -90,14 +95,14 @@ public final class DateUtils {
 		final long minute = ((timeInSeconds % oneDayInSec ) % oneHourInSec ) / oneMinuteInSec; 
 		final long second = ((timeInSeconds % oneDayInSec ) % oneHourInSec ) % oneMinuteInSec;
 		
-		//System.out.println("In calc: Year " + year + " Week " + week + " Day " + day + " Hour " + hours + " Minute " + minute + " Seconds " + second);
+		//LOG.debug("In calc: Year " + year + " Week " + week + " Day " + day + " Hour " + hours + " Minute " + minute + " Seconds " + second);
         return year+"j "+ week+"w "+ day+"d "+ hours+"h "+ minute+"m "+ second+"s ";
     }
 	
 	public static String convertCurrentSqlDateToString() {
 		final DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
 		String text = dateFormat.format(getCurrentSqlDate());
-		System.out.println(text);
+		LOG.debug(text);
 		return text;
 	}
 	

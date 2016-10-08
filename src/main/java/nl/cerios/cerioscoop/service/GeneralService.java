@@ -8,6 +8,9 @@ import java.util.Random;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import nl.cerios.cerioscoop.domain.Customer;
 import nl.cerios.cerioscoop.domain.Movie;
 import nl.cerios.cerioscoop.domain.Show;
@@ -18,6 +21,8 @@ import nl.cerios.cerioscoop.valueobjects.ShowsPresentationVO;
 
 @Stateless										//Stateless is de status van de gevulde opjecten. Best Practice is stateless.
 public class GeneralService {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(GeneralService.class);
 	
 	@EJB
 	private GenericDaoImpl genericDao;
@@ -103,6 +108,7 @@ public class GeneralService {
 				todaysShowsTable.add(newShowsPresentationRowVO);
 			}
 		}
+		LOG.debug("ShowTable has {} items", todaysShowsTable.size());
 		return todaysShowsTable;
 	}
 	

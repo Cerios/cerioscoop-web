@@ -14,6 +14,9 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import nl.cerios.cerioscoop.domain.Movie;
 import nl.cerios.cerioscoop.domain.MovieBuilder;
 import nl.cerios.cerioscoop.domain.Room;
@@ -21,6 +24,8 @@ import nl.cerios.cerioscoop.domain.Show;
 
 @Stateless
 public class GenericDaoImpl{
+
+	private static final Logger LOG = LoggerFactory.getLogger(GenericDaoImpl.class);
 	
 	@Resource(name = "jdbc/cerioscoop")
 	private DataSource dataSource;
@@ -133,7 +138,7 @@ public class GenericDaoImpl{
 				show.setRoom(room);
  
 				}
-				 System.out.println("Transaction(s) retrieved.");
+				LOG.debug("Transaction(s) retrieved.");
 				return show;
 			}
       

@@ -9,8 +9,12 @@ import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class SeleniumTest extends DatabaseTest {
+
+	private static final Logger LOG = LoggerFactory.getLogger(SeleniumTest.class);
 
 	public static final String BASE_URL = "http://localhost:9080/cerioscoop-web";
 
@@ -36,7 +40,7 @@ public abstract class SeleniumTest extends DatabaseTest {
 				webDriver = new ChromeDriver();
 				webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 			} catch (IllegalStateException e) {
-				System.err.println(e.getMessage());
+				LOG.error("Error creating WebDriver", e);
 				quitWebDriver();
 			}
 		}
@@ -60,8 +64,7 @@ public abstract class SeleniumTest extends DatabaseTest {
 			new URL(BASE_URL).openConnection().connect();
 			return true;
 		} catch (IOException e) {
-			System.err.println(
-					"The URL '" + BASE_URL + "' cannot be accessed. Please check if the web server is running.");
+			LOG.error("The URL '" + BASE_URL + "' cannot be accessed. Please check if the web server is running.", e);
 			return false;
 		}
 	}
