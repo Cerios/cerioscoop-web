@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `first_name` varchar(20) COLLATE utf8_bin NOT NULL,
   `last_name` varchar(20) COLLATE utf8_bin NOT NULL,
   `username` varchar(20) COLLATE utf8_bin NOT NULL,
-  `password` varchar(100) COLLATE utf8_bin NOT NULL,
+  `password` varchar(20) COLLATE utf8_bin NOT NULL,
   `email` varchar(50) COLLATE utf8_bin NOT NULL,
   UNIQUE (`username`),
   PRIMARY KEY (`customer_id`)
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
 -- Structuur van  tabel cerioscoop.movie wordt geschreven
 DROP TABLE IF EXISTS `movie`;
 CREATE TABLE IF NOT EXISTS `movie` (
-  `movie_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `movie_id` int(20) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(20) COLLATE utf8_bin NOT NULL,
   `movie_description` varchar(255) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`movie_id`)
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `room` (
 DROP TABLE IF EXISTS `show_table`;
 CREATE TABLE IF NOT EXISTS `show_table` (
   `show_id` int(20) unsigned NOT NULL AUTO_INCREMENT,
-  `movie_id` bigint(20) unsigned NOT NULL,
+  `movie_id` int(20) unsigned NOT NULL,
   `room_id` int(20) unsigned NOT NULL,
   `show_date` date NOT NULL,
   `show_time` time NOT NULL,

@@ -22,11 +22,11 @@ import nl.cerios.cerioscoop.service.CustomerDaoImpl;
 /**
  * Servlet implementation class TransactionServlet
  */
-@WebServlet("/TransactionServlet")
-public class TransactionServlet extends HttpServlet {
+@WebServlet("/TicketHistoryServlet")
+public class TicketHistoryServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOG = LoggerFactory.getLogger(TransactionServlet.class);
+	private static final Logger LOG = LoggerFactory.getLogger(TicketHistoryServlet.class);
 
 	@EJB
 	private CustomerDaoImpl customerDao;
@@ -42,7 +42,7 @@ public class TransactionServlet extends HttpServlet {
 			LOG.debug(a);
 			transactions = customerDao.getTransactionByUsername(a);
 			request.setAttribute("transactions", transactions);
-			getServletContext().getRequestDispatcher("/jsp/transactions.jsp").forward(request, response);
+			getServletContext().getRequestDispatcher("/jsp/ticket-history.jsp").forward(request, response);
 		} else {
 			getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 		}

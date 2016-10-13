@@ -120,9 +120,15 @@ public class GenericDaoImpl{
 	}    
     
 	
+    /**
+     * @param showid
+     * @return
+     * 
+     * TODO Use a constructor to set show values, so it can be immutable later
+     */
     public Show getShowById(int showid){
     	Show show = new Show();
-       	String SQL = "SELECT M.title, R.room_name FROM show_table S INNER JOIN movie M on M.movie_id = S.movie_id INNER JOIN room R on R.room_id = S.room_id WHERE S.show_id = ?";
+       	String SQL = "SELECT S.show_id, M.title, R.room_name, S.available_places, S.show_price FROM show_table S INNER JOIN movie M on M.movie_id = S.movie_id INNER JOIN room R on R.room_id = S.room_id WHERE S.show_id = ?";
     	try (final Connection connection = dataSource.getConnection()) {
 			final PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, showid);
@@ -133,10 +139,12 @@ public class GenericDaoImpl{
 				room.setRoomName(resultSet.getString("R.room_name"));
 
 				Movie movie = new MovieBuilder().withMovieTitle(resultSet.getString("M.title")).build();
-				
+				show.setShowId(resultSet.getInt("S.show_id"));
 				show.setMovie(movie);
 				show.setRoom(room);
- 
+				show.setAvailablePlaces(resultSet.getInt("S.available_places"));
+				show.setShowPrice(resultSet.getInt("S.show_price"));
+				LOG.debug("SQL Showprice: " + show.getShowPrice());
 				}
 				LOG.debug("Transaction(s) retrieved.");
 				return show;

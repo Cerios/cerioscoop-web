@@ -110,6 +110,25 @@ public class CustomerDaoImpl{
         }
     }
 	
+	public void addTransaction(Transaction transaction) {
+		try (final Connection connection = dataSource.getConnection();
+				final PreparedStatement preparedStatement = connection.prepareStatement(
+						"INSERT INTO show_transaction (customer_id, show_id, bankaccount, reserved_places, total_price) VALUES (?,?,?,?,?)")) {
+				
+	        	preparedStatement.setInt(1, transaction.getCustomer().getCustomerId());
+	           	preparedStatement.setInt(2, transaction.getShow().getShowId());
+	        	preparedStatement.setString(3, transaction.getBankAccount());
+	        	preparedStatement.setInt(4, transaction.getReservedChairs());
+	        	preparedStatement.setFloat(5, transaction.getTotalPrice());
+	        	preparedStatement.executeUpdate();
+	        	
+	        	System.out.println("Transaction inserted.");
+		    }catch (final SQLException e) {
+		    	throw new ServiceException("Something went wrong while inserting the transaction items.", e);
+		    }
+		
+	}
+	
 	
 	public void deleteCustomerByUsername(String username) {
     	try (final Connection connection = dataSource.getConnection()) {

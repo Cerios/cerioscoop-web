@@ -13,9 +13,9 @@
 
 
 -- Databasestructuur van cerioscoop wordt geschreven
-DROP DATABASE IF EXISTS `cerioscoop_db`;
-CREATE DATABASE IF NOT EXISTS `cerioscoop_db` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
-USE `cerioscoop_db`;
+DROP DATABASE IF EXISTS `cerioscoop_test_db`;
+CREATE DATABASE IF NOT EXISTS `cerioscoop_test_db` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
+USE `cerioscoop_test_db`;
 
 -- Data exporteren was gedeselecteerd
 -- Structuur van  tabel cerioscoop.customer wordt geschreven

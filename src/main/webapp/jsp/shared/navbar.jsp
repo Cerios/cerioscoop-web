@@ -15,9 +15,6 @@
 
 </head>
 <body>
-
-	<%	if(session.getAttribute("user") !=null) { User customer = (User) session.getAttribute("user"); customer.getUsername();} %>
-
 	<div class="navbar">
 		<div class="navbar-buttons-wrapper">
 			<div class="navbar-button">
@@ -30,8 +27,7 @@
 			if (user == null) {
 			%>
 				<div class="navbar-button">
-				<a id="navbar-register" href="/cerioscoop-web/RegisterServlet"> <span
-					class="navbar-button-text">REGISTER</span>
+				<a id="navbar-register" href="/cerioscoop-web/RegisterServlet"> <span class="navbar-button-text">REGISTER</span>
 				</a>
 			</div>
 
@@ -52,20 +48,19 @@
 			</div>
 			
 				<div class="navbar-button">
-				<a id="transaction-button" href="/cerioscoop-web/TransactionServlet"> <span
-					class="navbar-button-text">TRANSACTIONS</span>
+				<a id="transaction-button" href="/cerioscoop-web/TicketHistoryServlet"> <span
+					class="navbar-button-text">TICKET HISTORY</span>
 				</a>
 			</div>
 			<% } %>
 		           	<div class="navbar-button"><span>
-			<%	if(session.getAttribute("user") !=null) { User customer = (User) session.getAttribute("user"); out.println("LOGGED IN AS: "+customer.getUsername());} %>
-		</span>
+			<%if(session.getAttribute("user") != null) { 
+			User customer = (User) session.getAttribute("user"); 
+			out.println("LOGGED IN AS: "+customer.getUsername());
+			}%>
+			</span>
 			</div>
-		
 		</div>
-		
-		
-		
 	</div>
 </body>
 </html>
