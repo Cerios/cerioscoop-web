@@ -20,10 +20,10 @@ public class SecurityService {
 	
 	
 	//snipper from: https://gist.github.com/DandyDev/5394643
-	public static boolean ibanTest(String accountNumber) {
-		int ibanNumberMinSize = 15; 
-		int ibanNumberMaxSize = 34;
-		BigInteger ibanMagicNumber = new BigInteger("97");
+	public static boolean ibanTest(final String accountNumber) {
+		final int ibanNumberMinSize = 15; 
+		final int ibanNumberMaxSize = 34;
+		final BigInteger ibanMagicNumber = new BigInteger("97");
 		
 	    String newAccountNumber = accountNumber.trim();
 	
