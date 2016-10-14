@@ -33,7 +33,8 @@ public class PaymentServlet extends HttpServlet {
     private int reservedPlaces;
     private float totalPrice;
     private static final Logger LOG = LoggerFactory.getLogger(GenericDaoImpl.class);
-	@EJB
+	
+    @EJB
 	private CustomerDaoImpl customerDao;
 	
 	@EJB
@@ -90,6 +91,9 @@ public class PaymentServlet extends HttpServlet {
 			transaction.setShow(show);
 			transaction.setTotalPrice(totalPrice);
 			customerDao.addTransaction(transaction);
+			
+			//TODO update_available_chairs in show_table
+			
 			
 			out.println("<script type=\"text/javascript\">");
 			out.println("alert('Thanks for buying the tickets!');");

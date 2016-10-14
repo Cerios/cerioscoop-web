@@ -1,5 +1,7 @@
 package nl.cerios.cerioscoop.selenium;
 
+import java.time.LocalDate;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -11,6 +13,7 @@ import nl.cerios.testutil.SeleniumTest;
 
 
 public class TransactionTest extends SeleniumTest{
+	private static final String currentDate = LocalDate.now().toString();
 	
 	@Test
 	public void shouldLoginAndNavigateToTransactionPage(){
@@ -29,7 +32,7 @@ public class TransactionTest extends SeleniumTest{
 	 	
 	    Assert.assertEquals("Wedding Crashers", movieTitle);
         Assert.assertEquals("blue room", roomName);
-	    Assert.assertEquals("2016-10-04", showDate);
+	    Assert.assertEquals(currentDate, showDate);
 	    Assert.assertEquals("16:00:00", showTime);
 	    Assert.assertEquals("3", reservedChairs);
 	}

@@ -23,7 +23,6 @@ public final class MovieBuilder {
 		return this;
 	}
 
-	
 	public Movie build() {
 		return new Movie(movieId, title, description);
 	}

@@ -5,7 +5,6 @@ public class RegisterAttributes {
 	private String firstname;
 	private String lastname;
 	private String username;
-
 	private String email;
 	
 	public String getFirstname() {

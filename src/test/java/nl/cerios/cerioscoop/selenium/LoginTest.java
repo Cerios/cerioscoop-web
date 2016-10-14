@@ -12,9 +12,9 @@ public class LoginTest extends SeleniumTest {
 	@Test
 	public void shouldLoginCustomerSuccessfully() {
 	    CustomerPage customerPage = new IndexPage(getWebDriver())
-	      .loginToCustomerPage("ron","SuperRon");
+	      .loginToCustomerPage("C","C");
 	    
 	    Assert.assertNotNull(customerPage);
-	    Assert.assertEquals("Welcome, you have been logged in successfully\nHello ron (customer)!", customerPage.getWelcomeMessage());
+	    Assert.assertEquals("Welcome, you have been logged in successfully\nHello C (customer)!", customerPage.getWelcomeMessage());
 	  }
 }

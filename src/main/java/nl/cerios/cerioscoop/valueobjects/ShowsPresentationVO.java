@@ -15,10 +15,6 @@ public class ShowsPresentationVO {
 	public Movie movie;
 	public List<ShowPresentationVO> shows;
 
-	public ShowsPresentationVO() {
-		
-	}
-
 	public Movie getMovie() {
 		return movie;
 	}

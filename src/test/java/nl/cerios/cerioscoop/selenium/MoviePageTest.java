@@ -15,8 +15,8 @@ public class MoviePageTest extends SeleniumTest {
 	      .navigateToMoviePage("1");
 	    
 	    Assert.assertNotNull(moviePage);
-	    Assert.assertEquals("MovieTitle: The Legend of Tarzan", moviePage.getMovieTitleFromMoviePage());
-	    Assert.assertEquals("Description: A story about a boy that survived in the jungle.", moviePage.getMovieDescriptionFromMoviePage());
+	    Assert.assertEquals("The Legend of Tarzan", moviePage.getMovieTitleFromMoviePage());
+	    Assert.assertEquals("A story about a boy that survived in the jungle.", moviePage.getMovieDescriptionFromMoviePage());
 	  }
 	
 	@Test
@@ -25,7 +25,7 @@ public class MoviePageTest extends SeleniumTest {
 	      .navigateToMoviePage("7");
 	    
 	    Assert.assertNotNull(moviePage);
-	    Assert.assertEquals("MovieTitle: Snatch", moviePage.getMovieTitleFromMoviePage());
-	    Assert.assertEquals("Description: A story about a diamond that all the pikeys want to have.", moviePage.getMovieDescriptionFromMoviePage());
+	    Assert.assertEquals("Snatch", moviePage.getMovieTitleFromMoviePage());
+	    Assert.assertEquals("A story about a diamond that all the pikeys want to have.", moviePage.getMovieDescriptionFromMoviePage());
 	  }
 }

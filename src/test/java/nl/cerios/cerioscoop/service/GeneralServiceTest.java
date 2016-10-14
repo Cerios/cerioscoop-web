@@ -17,9 +17,9 @@ import nl.cerios.cerioscoop.domain.MovieBuilder;
 import nl.cerios.cerioscoop.domain.Show;
 import nl.cerios.cerioscoop.util.DateUtils;
 import nl.cerios.cerioscoop.valueobjects.ShowsPresentationVO;
-import nl.cerios.testutil.DatabaseTest;
+import nl.cerios.testutil.DerbyDatabaseTest;
 
-public class GeneralServiceTest extends DatabaseTest {
+public class GeneralServiceTest extends DerbyDatabaseTest {
 
 	@InjectMocks
 	private GeneralService generalService;

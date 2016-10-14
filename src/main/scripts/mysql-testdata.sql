@@ -20,7 +20,7 @@ INSERT INTO `customer` (`customer_id`, `first_name`, `last_name`, `username`, `p
 	(1, 'Rutger', 'van Velzen', 'faust', 'Fausttothemax', 'rutger.van.velzen@cerios.nl'),
 	(2, 'Marcel', 'Groothuis', 'marcel', 'HeerserMarcel', 'marcel.groothuis@cerios.nl'),
 	(3, 'Ron', 'Sanders', 'ron', 'SuperRon', 'ron.sanders@cerios.nl'),
-	(4, 'TestCustomer', 'C', 'C', 'C', 'C@cerios.nl');
+	(4, 'TestCustomer', 'C', 'C', '6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d', 'C@cerios.nl');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 
 -- Dumpen data van tabel cerioscoop.movie: ~7 rows (ongeveer)

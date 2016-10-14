@@ -6,10 +6,6 @@ public class ShowPresentationVO {
 	public Show show;
 	public Boolean soldOut;
 	
-	public ShowPresentationVO() {
-		
-	}
-	
 	public Show getShow() {
 		return show;
 	}

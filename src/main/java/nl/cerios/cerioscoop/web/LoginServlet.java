@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		final List<Customer> dbCustomers = customerDao.getCustomers();
-		final User customer = new Customer();
+		final User customer = new Customer(); //TODO make it customer datatype instead of user 
 		final User authenticatedCustomer;
 		final HttpSession session = request.getSession();
 		final PrintWriter out = response.getWriter();

@@ -12,7 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class SeleniumTest extends DatabaseTest {
+public abstract class SeleniumTest extends MySqlDatabaseTest {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SeleniumTest.class);
 

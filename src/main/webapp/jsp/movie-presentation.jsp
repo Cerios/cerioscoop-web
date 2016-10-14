@@ -26,8 +26,8 @@
 		<tbody>
 		<% Movie movie = (Movie)request.getAttribute("movie");%>
 				<tr>
-					<td><%=movie.getTitle()%></td>
-					<td><%=movie.getDescription()%></td>
+					<td id="movie-title"><%=movie.getTitle()%></td>
+					<td id="movie-description"><%=movie.getDescription()%></td>
 				</tr>
 		</tbody>
 	</table>
