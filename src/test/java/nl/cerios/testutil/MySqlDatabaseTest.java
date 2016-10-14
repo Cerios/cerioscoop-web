@@ -13,6 +13,8 @@ import javax.sql.DataSource;
 
 import org.junit.BeforeClass;
 import org.mockito.Spy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
@@ -23,6 +25,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
  *  
  */
 public class MySqlDatabaseTest {
+	private static final Logger LOG = LoggerFactory.getLogger(SeleniumTest.class);
 	protected static final Properties PROPS;
 
 	static {
@@ -47,19 +50,24 @@ public class MySqlDatabaseTest {
 	}
 	
 	@BeforeClass
-	public static void initDatabase() throws IOException, SQLException {	
-		// ...and run SQL scripts
-		try (final Connection connection = getDataSource().getConnection();
-				final Statement sqlStatement = connection.createStatement()) {
-
-			final String[] scriptResourceNames = new String[] { PROPS.getProperty("db.script.create"),
-					PROPS.getProperty("db.script.testData") };
-
-			for (String scriptResourceName : scriptResourceNames) {
-				try (InputStream scriptStream = MySqlDatabaseTest.class.getResourceAsStream(scriptResourceName)) {
-					runSqlScript(sqlStatement, scriptStream);
+	public static void initDatabase() throws IOException, SQLException {
+		if(SeleniumTest.isWebServerRunning()){
+			// ...and run SQL scripts
+			try (final Connection connection = getDataSource().getConnection();
+					final Statement sqlStatement = connection.createStatement()) {
+	
+				final String[] scriptResourceNames = new String[] { PROPS.getProperty("db.script.create"),
+						PROPS.getProperty("db.script.testData") };
+	
+				for (String scriptResourceName : scriptResourceNames) {
+					try (InputStream scriptStream = MySqlDatabaseTest.class.getResourceAsStream(scriptResourceName)) {
+						runSqlScript(sqlStatement, scriptStream);
+					}
 				}
 			}
+		}else{
+			LOG.error("WebServer is not running!");
+			return;
 		}
 	}
 
