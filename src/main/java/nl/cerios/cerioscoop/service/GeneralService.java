@@ -9,19 +9,18 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 
-import nl.cerios.cerioscoop.domain.Category;
+import nl.cerios.cerioscoop.ValueObjects.ShowPresentationVO;
+import nl.cerios.cerioscoop.ValueObjects.ShowsPresentationVO;
 import nl.cerios.cerioscoop.domain.Customer;
-import nl.cerios.cerioscoop.domain.Employee;
 import nl.cerios.cerioscoop.domain.Movie;
 import nl.cerios.cerioscoop.domain.MovieBuilder;
 import nl.cerios.cerioscoop.domain.Show;
-import nl.cerios.cerioscoop.domain.ShowPresentation;
-import nl.cerios.cerioscoop.domain.ShowPresentationBuilder;
 import nl.cerios.cerioscoop.domain.User;
 import nl.cerios.cerioscoop.util.DateUtils;
 
@@ -30,22 +29,18 @@ public class GeneralService {
 
 	@Resource(name = "jdbc/cerioscoop")			//Content Dependency Injection techniek
 	private DataSource dataSource;
+	private DateUtils dateUtils = new DateUtils();
 	
 	public List<Movie> getMovies(){
 		final List<Movie> movies = new ArrayList<>();
 		try (final Connection connection = dataSource.getConnection()) {			//AutoCloseable
 			final Statement statement = connection.createStatement();
-			final ResultSet resultSet = statement.executeQuery("SELECT movie_id, title, category, minutes, movie_type, language, description, trailer FROM movie");
+			final ResultSet resultSet = statement.executeQuery("SELECT movie_id, title, movie_description FROM movie");
 			while (resultSet.next()) {
 				final Movie movie = new MovieBuilder()
 						.withMovieId(resultSet.getBigDecimal("movie_id").toBigInteger())
-						.withTitle(resultSet.getString("title"))
-						.withCategory(Category.valueOf(resultSet.getString("category")))
-						.withMinutes(resultSet.getInt("minutes"))
-						.withType(resultSet.getInt("movie_type"))
-						.withLanguage(resultSet.getString("language"))
-						.withDescription(resultSet.getString("description"))
-						.withTrailer(resultSet.getString("trailer"))
+						.withMovieTitle(resultSet.getString("title"))
+						.withMovieDescription(resultSet.getString("movie_description"))
 						.build();
 				movies.add(movie);
 			}
@@ -59,15 +54,17 @@ public class GeneralService {
 		final List<Show> shows = new ArrayList<>();
 		try (final Connection connection = dataSource.getConnection()){
 			final Statement statement = connection.createStatement();
-			final ResultSet resultSet = statement.executeQuery("SELECT show_id, movie_id, room_id, show_date, show_time FROM show_table"); { 
+			final ResultSet resultSet = statement.executeQuery("SELECT show_id, movie_id, room_id, show_date, show_time, available_places, show_price FROM show_table"); { 
 			while (resultSet.next()) {
 				final int showId = resultSet.getInt("show_id");
 				final int movieId = resultSet.getInt("movie_id");
 				final int roomId = resultSet.getInt("room_id");
 				final Date showDate = resultSet.getDate("show_date");
 				final Time showTime = resultSet.getTime("show_time");
+				final int availablePlaces = resultSet.getInt("available_places");
+				final float showPrice = resultSet.getInt("show_price");
 				
-	        	shows.add(new Show(showId, movieId, roomId, showDate, showTime));
+	        	shows.add(new Show(showId, movieId, roomId, showDate, showTime, availablePlaces, showPrice));
 	        	}
 	        return shows;
 	      }
@@ -80,7 +77,7 @@ public class GeneralService {
 		final List<Customer> customers = new ArrayList<>();
 		try (final Connection connection = dataSource.getConnection()){
 			final Statement statement = connection.createStatement();
-			final ResultSet resultSet = statement.executeQuery("SELECT customer_id, first_name, last_name, username, password, email, customer_create_date, customer_create_time FROM customer"); { 
+			final ResultSet resultSet = statement.executeQuery("SELECT customer_id, first_name, last_name, username, password, email FROM customer"); { 
 
 			while (resultSet.next()) {
 				final int customerId = resultSet.getInt("customer_id");
@@ -89,10 +86,8 @@ public class GeneralService {
 				final String username = resultSet.getString("username");
 				final String password = resultSet.getString("password");
 				final String email = resultSet.getString("email");
-				final Date createDate = resultSet.getDate("customer_create_date");
-				final Time createTime = resultSet.getTime("customer_create_time");
-				
-				customers.add(new Customer(customerId, firstName, lastName, username, password, email, createDate, createTime));
+
+				customers.add(new Customer(customerId, firstName, lastName, username, password, email));
 	        	}
 	        return customers;
 	      }
@@ -101,72 +96,20 @@ public class GeneralService {
 	    }
 	}
 	
-	public List<Employee> getEmployees(){
-		final List<Employee> employees = new ArrayList<>();
-		try (final Connection connection = dataSource.getConnection()){
-			final Statement statement = connection.createStatement();
-			final ResultSet resultSet = statement.executeQuery("SELECT employee_id, first_name, last_name, username, password, email, employee_create_date, employee_create_time FROM employee"); { 
-
-			while (resultSet.next()) {
-				final int employeeId = resultSet.getInt("employee_id");
-				final String firstName = resultSet.getString("first_name");
-				final String lastName = resultSet.getString("last_name");
-				final String username = resultSet.getString("username");
-				final String password = resultSet.getString("password");
-				final String email = resultSet.getString("email");
-				final Date createDate = resultSet.getDate("employee_create_date");
-				final Time createTime = resultSet.getTime("employee_create_time");
-				
-				employees.add(new Employee(employeeId, firstName, lastName, username, password, email, createDate, createTime));
-	        	}
-	        return employees;
-	      }
-	    }catch (final SQLException e) {
-	    	throw new ServiceException("Something went terribly wrong while retrieving the employees.", e);
-	    }
-	}
-	
-	public List<ShowPresentation> getShowings(){
-		final List<ShowPresentation> showings = new ArrayList<>();
-		try (final Connection connection = dataSource.getConnection()){
-			final Statement statement = connection.createStatement();
-			final ResultSet resultSet = statement.executeQuery("SELECT show_id, title, room_name, show_date, show_time, chair_amount, trailer FROM show_presentation"); { 
-
-			while (resultSet.next()) {
-				final ShowPresentation show = new ShowPresentationBuilder()
-						.withShowingId(resultSet.getBigDecimal("show_id").toBigInteger())
-						.withMovieTitle(resultSet.getString("title"))
-						.withRoomName(resultSet.getString("room_name"))
-						.withShowingDate(resultSet.getDate("show_date"))
-						.withShowingTime(resultSet.getTime("show_time"))
-						.withChairAmount(resultSet.getBigDecimal("chair_amount").toBigInteger())
-						.withTrailer(resultSet.getString("trailer"))
-						.build();			
-				showings.add(show);
-	        	}
-	        return showings;
-	      }
-	    }catch (final SQLException e) {
-	    	throw new ServiceException("Something went terribly wrong while retrieving the ShowingList.", e);
-	    }
-	}
 	/**
 	 * Returns a first showing record.
 	 * 
 	 * @return firstShowing
 	 */
-	public ShowPresentation getFirstShowAfterCurrentDate(final List<ShowPresentation> listOfShows){
-		final List<ShowPresentation> shows = listOfShows;
-		final DateUtils dateUtils = new DateUtils();
-		ShowPresentation firstShow = null;
-		
-		for (final ShowPresentation show : shows) {
-			if(show.getShowingDate().after(dateUtils.getCurrentSqlDate())){	
+	public Show getFirstShowforToday(final List<Show> listOfShows){
+		Show firstShow = null;	
+		for (final Show show : listOfShows) {
+			if(dateUtils.toDateTime(show.getShowDate(), show.getShowTime()).after(dateUtils.getCurrentSqlTime())){	
 				if(firstShow == null){			//hier wordt voor 1x eerstVolgendeFilm gevuld					
 					firstShow = show;
 				}
-				else if(show.getShowingDate().before(firstShow.getShowingDate())){
-					firstShow = show;			
+				else if(show.getShowTime().before(firstShow.getShowTime())){
+					firstShow = show;		
 				}
 			}
 		}
@@ -188,15 +131,13 @@ public class GeneralService {
 	public void registerCustomer(final Customer customer){
 		try (final Connection connection = dataSource.getConnection();
 				final PreparedStatement preparedStatement = connection.prepareStatement(
-						"INSERT INTO customer (first_name, last_name, username, password, email, customer_create_date, customer_create_time) VALUES (?,?,?,?,?,?,?);")) {
+						"INSERT INTO customer (first_name, last_name, username, password, email) VALUES (?,?,?,?,?)")) {
 				
 	        	preparedStatement.setString(1, customer.getFirstName());
 	        	preparedStatement.setString(2, customer.getLastName());
 	        	preparedStatement.setString(3, customer.getUsername());
 	        	preparedStatement.setString(4, customer.getPassword());
 	        	preparedStatement.setString(5, customer.getEmail());
-	        	preparedStatement.setDate(6, customer.getCreateDate()); 
-	        	preparedStatement.setTime(7,customer.getCreateTime());
 	        	preparedStatement.executeUpdate();
 	        	
 	        	System.out.println("Data inserted.");
@@ -219,26 +160,62 @@ public class GeneralService {
 		return authenticatedCustomer;
 	}
 	
-	
-	public User authenticateEmployee(User employee, List<Employee> listOfEmployees){
-		final List<Employee> dbEmployees = listOfEmployees;	
-		final String usernameEmployee = employee.getUsername();
-		final String passwordEmployee = employee.getPassword();
-		User authenticatedEmployee = null;
-		
-		for (final Employee employeeItem : dbEmployees){
-			if(employeeItem.getUsername().equals(usernameEmployee) && employeeItem.getPassword().equals(passwordEmployee)){
-				authenticatedEmployee = employeeItem;
-				}
-		}
-		return authenticatedEmployee;
-	}
-	
 	public Boolean authenticateUser(User authenticatedUser){
 		if(authenticatedUser == null){
 			return false;
 		}
 		return true;
 	}
+	
+	public List<ShowsPresentationVO> generateShowTable(final List<Show> shows, final List<Movie> movies) throws MovieNotFoundException {
+		List<ShowsPresentationVO> todaysShowsTable = new ArrayList<ShowsPresentationVO>();
+
+		// voeg alle shows toe aan de tabel
+		for (Show todaysShow : shows) {
+			ShowsPresentationVO existingShowsPresentationVORow = null; // checkt of de movie van de huidige tabel al is opgenomen
+			for (ShowsPresentationVO showsRowIter : todaysShowsTable) {
+				if (todaysShow.getMovieId() == showsRowIter.getMovie().getMovieId().intValue()) {// hier bestaat de movie al in de index
+					ShowPresentationVO newShowPresentationVO = new ShowPresentationVO();
+					newShowPresentationVO.setShow(todaysShow);
+					newShowPresentationVO.setSoldOut(checkIfThereAreNoAvailablePlaces(todaysShow.getAvailablePlaces()));			
+					showsRowIter.shows.add(newShowPresentationVO);
+					existingShowsPresentationVORow = showsRowIter;
+				}
+			}
+			if (existingShowsPresentationVORow == null) {//Nieuwe MovieRow worst gemaakt
+				ShowPresentationVO newShowPresentationVO = new ShowPresentationVO();
+				newShowPresentationVO.setShow(todaysShow);
+				newShowPresentationVO.setSoldOut(checkIfThereAreNoAvailablePlaces(todaysShow.getAvailablePlaces()));
+				
+				ShowsPresentationVO newShowsPresentationRowVO = new ShowsPresentationVO();			
+				List<ShowPresentationVO> showPresentationVOList = new ArrayList<ShowPresentationVO>();
+				showPresentationVOList.add(newShowPresentationVO);
+				newShowsPresentationRowVO.setMovie(getMovieByMovieId(todaysShow.getMovieId(), movies));
+				newShowsPresentationRowVO.setShowsPresentationVO(showPresentationVOList);
+				todaysShowsTable.add(newShowsPresentationRowVO);
+			}
+		}
+		return todaysShowsTable;
+	}
+	
+	public String generateRandomUsername(){
+		char[] chars = "abcdefghijklmnopqrstuvwxyz1234567890".toCharArray();
+		StringBuilder sb = new StringBuilder();
+		Random random = new Random();
+		for (int i = 0; i < 20; i++) {
+		    char c = chars[random.nextInt(chars.length)];
+		    sb.append(c);
+		}
+		return sb.toString();
+	}
+	
+	public Boolean checkIfThereAreNoAvailablePlaces(int availablePlaces){
+		if(availablePlaces == 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }
+
 

@@ -1,8 +1,5 @@
 package nl.cerios.cerioscoop.domain;
 
-import java.sql.Date;
-import java.sql.Time;
-
 public class Customer extends User{
 	private int customerId;
 	
@@ -10,8 +7,8 @@ public class Customer extends User{
 	}
 	
 	public Customer(int customerId, String firstName, String lastName, String username, String password,
-			String email, Date createDate, Time createTime) {
-		super(firstName, lastName, username, password, email, createDate, createTime);
+			String email) {
+		super(firstName, lastName, username, password, email);
 		this.customerId = customerId;
 	}
 

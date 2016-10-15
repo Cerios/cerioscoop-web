@@ -12,15 +12,12 @@ public class RoomTest {
 		final Room room = new Room();
 		
 			room.setRoomId(1);		
-			room.setName("Yellow room");
-			room.setChairAmount(50);
-			room.setRoomType(2);
+			room.setRoomName("Yellow room");
+			room.setCapacity(50);
 				
 			Assert.assertNotNull(room);
 			Assert.assertEquals(1, room.getRoomId());
-			Assert.assertEquals("Yellow room", room.getName());
-			Assert.assertEquals(2, room.getRoomType());
-			
+			Assert.assertEquals("Yellow room", room.getRoomName());			
 	}
 
 }

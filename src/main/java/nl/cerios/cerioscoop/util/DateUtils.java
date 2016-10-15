@@ -110,7 +110,8 @@ public class DateUtils {
 		final Date utilTime = toTime(time);
 		final Time sqlTime = new Time(utilTime.getTime());
 		return sqlTime;
-	}
+	}	
+	
 	/**
 	 * http://www.java2s.com/Code/JavaAPI/java.sql/PreparedStatementsetTimeintparameterIndexTimex.htm
 	 * 
@@ -190,7 +191,7 @@ public class DateUtils {
 		return new SimpleDateFormat("d MMMM, HH:mm").format(new Date());
 	}
 
-	public static Date toDateTime(final Date date, final Time time) {
+	public Date toDateTime(final Date date, final Time time) {
 		final Calendar timeCal = Calendar.getInstance();
 		timeCal.setTime(time);
 		final Calendar cal = Calendar.getInstance();

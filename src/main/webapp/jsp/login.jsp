@@ -9,6 +9,7 @@
 	<!-- Login CSS
    	================================================== -->
 	<link rel="stylesheet" href="/cerioscoop-web/css/login.css">
+	<link href='/cerioscoop-web/css/shared.css' type='text/css' rel='stylesheet' />
 	
 </head>
 <body>
@@ -26,7 +27,7 @@
 	</div>
 	<div>
 		<br>New Customer
-		<br><a id="register-button" href="/cerioscoop-web/jsp/register.jsp" class="button">REGISTER</a>
+		<br><a id="register-button" href="/cerioscoop-web/RegisterServlet" class="button">REGISTER</a>
 	</div>
 </div>
 </body>
