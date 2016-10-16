@@ -54,7 +54,7 @@ public class DateUtilsTest {
 		final String refDate = "17-03-1997";
 		final String refTime = "23:14:51";
 
-		Date dateTime = DateUtils.toDateTime(new SimpleDateFormat("dd-MM-yyyy").parse(refDate), Time.valueOf(refTime));
+		Date dateTime = dateUtils.toDateTime(new SimpleDateFormat("dd-MM-yyyy").parse(refDate), Time.valueOf(refTime));
 
 		Assert.assertEquals(refDate + " " + refTime, new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(dateTime));
 	}

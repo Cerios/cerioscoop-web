@@ -1,16 +1,16 @@
 @CHARSET "ISO-8859-1";
 
 body {
-	margin: auto;
+    margin: auto;
 }
 
 .body-footer-wrapper {
-	width: 100%;
-	height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .footer {
-	position: absolute;
+    position: absolute;
     bottom: 0;
     width: 99%
 }
@@ -95,14 +95,4 @@ body {
   -webkit-animation-duration: 1.5s;
   animation-name: fade;
   animation-duration: 1.5s;
-}
-
-@-webkit-keyframes fade {
-  from {opacity: .4} 
-  to {opacity: 1}
-}
-
-@keyframes fade {
-  from {opacity: .4} 
-  to {opacity: 1}
 }

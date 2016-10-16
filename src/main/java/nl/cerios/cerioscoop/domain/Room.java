@@ -2,9 +2,8 @@ package nl.cerios.cerioscoop.domain;
 
 public class Room {
 	private int roomId;
-	private String name;
-	private int chairAmount;
-	private int roomType;
+	private String roomName;
+	private int capacity;
 	
 	public int getRoomId() {
 		return roomId;
@@ -14,27 +13,21 @@ public class Room {
 		this.roomId = roomId;
 	}
 
-	public String getName() {
-		return name;
+	public String getRoomName() {
+		return roomName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
 	}
 
-	public int getChairAmount() {
-		return chairAmount;
+	public int getCapacity() {
+		return capacity;
 	}
 
-	public void setChairAmount(int chairAmount) {
-		this.chairAmount = chairAmount;
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
 	}
 
-	public int getRoomType() {
-		return roomType;
-	}
 
-	public void setRoomType(int roomType) {
-		this.roomType = roomType;
-	}
 }

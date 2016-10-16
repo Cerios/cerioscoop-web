@@ -9,15 +9,34 @@ public class Show {
 	private int roomId;
 	private Date showDate;
 	private Time showTime;
+	private int availablePlaces;
+	private float showPrice;
 	
 	public Show() {
 	}
-	public Show(final int showId, final int movieId, final int roomId, final Date showDate, final Time showTime) {
+	
+	public Show(final int showId, final int movieId,final Date showDate, final Time showTime) {
+		this.showId = showId;
+		this.movieId = movieId;
+		this.showDate = showDate;
+		this.showTime = showTime;
+	}
+	
+	public Show(final int showId, final int movieId,final Date showDate, final Time showTime , final int availablePlaces) {
+		this.showId = showId;
+		this.movieId = movieId;
+		this.showDate = showDate;
+		this.showTime = showTime;
+		this.availablePlaces = availablePlaces;
+	}
+	public Show(final int showId, final int movieId, final int roomId, final Date showDate, final Time showTime, final int availablePlaces, final float showPrice) {
 		this.showId = showId;
 		this.movieId = movieId;
 		this.roomId = roomId; 
 		this.showDate = showDate;
 		this.showTime = showTime;
+		this.availablePlaces = availablePlaces;
+		this.showPrice = showPrice;
 	}
 	public int getShowId() {
 		return showId;
@@ -49,4 +68,17 @@ public class Show {
 	public void setShowTime(final Time showTime) {
 		this.showTime = showTime;
 	}
+	public int getAvailablePlaces() {
+		return availablePlaces;
+	}
+	public void setAvailablePlaces(int availablePlaces) {
+		this.availablePlaces = availablePlaces;
+	}
+	public float getShowPrice() {
+		return showPrice;
+	}
+	public void setShowPrice(int showPrice) {
+		this.showPrice = showPrice;
+	}
+
 }

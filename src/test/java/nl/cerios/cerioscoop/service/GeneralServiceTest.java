@@ -11,13 +11,11 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
-import nl.cerios.cerioscoop.domain.Category;
+import nl.cerios.cerioscoop.ValueObjects.ShowsPresentationVO;
 import nl.cerios.cerioscoop.domain.Customer;
-import nl.cerios.cerioscoop.domain.Employee;
 import nl.cerios.cerioscoop.domain.Movie;
 import nl.cerios.cerioscoop.domain.MovieBuilder;
-import nl.cerios.cerioscoop.domain.ShowPresentation;
-import nl.cerios.cerioscoop.domain.ShowPresentationBuilder;
+import nl.cerios.cerioscoop.domain.Show;
 import nl.cerios.cerioscoop.util.DateUtils;
 import nl.cerios.testutil.DatabaseTest;
 
@@ -35,9 +33,16 @@ public class GeneralServiceTest extends DatabaseTest {
 	@Test
 	public void testGetMovies() {
 		final List<Movie> movies = generalService.getMovies();
-
 		Assert.assertNotNull(movies);
-		Assert.assertEquals(3, movies.size());
+		Assert.assertEquals(7, movies.size());
+	}
+	
+	@Test
+	public void testGetShows() {
+		final List<Show> shows = generalService.getShows();
+
+		Assert.assertNotNull(shows);
+		Assert.assertEquals(7, shows.size());
 	}
 		
 	@Test
@@ -46,93 +51,49 @@ public class GeneralServiceTest extends DatabaseTest {
 
 		Assert.assertNotNull(customers);
 		Assert.assertEquals(3, customers.size());
-	}
+	}	
 	
 	@Test
-	public void testGetEmployees() {
-		final List<Employee> employees = generalService.getEmployees();
-
-		Assert.assertNotNull(employees);
-		Assert.assertEquals(1, employees.size());
-	}
-	
-	@Test
-	public void testGetShowings() {
-		final List<ShowPresentation> showings = generalService.getShowings();
-
-		Assert.assertNotNull(showings);
-		Assert.assertEquals(4, showings.size());
-	}
-	
-	
-	@Test
-	public void testGetFirstShowAfterCurrentDate() throws ParseException{
+	public void testGetFirstShowforToday() throws ParseException{
 	//Shows	
-		final ShowPresentation showOne = new ShowPresentationBuilder()
-				.withShowingId(BigInteger.valueOf(1))
-				.withMovieTitle("showOne")
-				.withRoomName("Yellow room")
-				.withShowingDate(dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("08-01-2020"))))
-				.withShowingTime(dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))))
-				.build();	
-		
-		final ShowPresentation showTwo = new ShowPresentationBuilder()
-				.withShowingId(BigInteger.valueOf(2))
-				.withMovieTitle("showTwo")
-				.withRoomName("Yellow room")
-				.withShowingDate(dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("07-23-2020"))))
-				.withShowingTime(dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))))
-				.build();	
-				
-		final ShowPresentation showThree = new ShowPresentationBuilder()
-				.withShowingId(BigInteger.valueOf(3))
-				.withMovieTitle("showThree")
-				.withRoomName("Yellow room")
-				.withShowingDate(dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("09-03-2020"))))
-				.withShowingTime(dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))))
-				.build();	
-		
+		final Show showOne = new Show(0, 1, 
+				dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("07-20-2020"))),
+				dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))));
+		final Show showTwo = new Show(0, 2, 
+				dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("07-23-2020"))),
+				dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))));
+		final Show showThree = new Show(0, 3, 
+				dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("09-03-2020"))),
+				dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))));	
 		
 	//Putting all movies in a list
-		final List<ShowPresentation> listOfShows = new ArrayList<>();
+		final List<Show> listOfShows = new ArrayList<>();
 		listOfShows.add(0, showOne);
 		listOfShows.add(1, showTwo);
 		listOfShows.add(2, showThree);
 		
 	//First show after the current date control 
-		Assert.assertNotEquals(showOne.getShowingDate() ,generalService.getFirstShowAfterCurrentDate(listOfShows).getShowingDate());
-		Assert.assertEquals(showTwo.getShowingDate() ,generalService.getFirstShowAfterCurrentDate(listOfShows).getShowingDate());
-		Assert.assertNotEquals(showThree.getShowingDate() ,generalService.getFirstShowAfterCurrentDate(listOfShows).getShowingDate());
+		Assert.assertEquals(showOne.getShowDate() ,generalService.getFirstShowforToday(listOfShows).getShowDate());
+		Assert.assertNotEquals(showTwo.getShowDate() ,generalService.getFirstShowforToday(listOfShows).getShowDate());
+		Assert.assertNotEquals(showThree.getShowDate() ,generalService.getFirstShowforToday(listOfShows).getShowDate());
 	}
 	@Test
 	public void testGetMovieByMovieId() throws MovieNotFoundException{
 	//Movies	
 		final Movie movieOne = new MovieBuilder()
 				.withMovieId(BigInteger.valueOf(1))
-				.withTitle("top titel")
-				.withMinutes(98)
-				.withType(3) // 3D
-				.withLanguage("Fries")
-				.withDescription("bagger v-film")
-				.withCategory(Category.COMEDY)
+				.withMovieTitle("top titel")
+				.withMovieDescription("bagger v-film")
 				.build();
 		final Movie movieTwo = new MovieBuilder()
 				.withMovieId(BigInteger.valueOf(2))
-				.withTitle("lekkere titel")
-				.withMinutes(453)
-				.withType(3) // 3D
-				.withLanguage("Grieks")
-				.withDescription("bagger v-film")
-				.withCategory(Category.COMEDY)
+				.withMovieTitle("lekkere titel")
+				.withMovieDescription("bagger v-film")
 				.build();
 		final Movie movieThree = new MovieBuilder()
 				.withMovieId(BigInteger.valueOf(3))
-				.withTitle("keke titel")
-				.withMinutes(9)
-				.withType(3) // 3D
-				.withLanguage("Twents")
-				.withDescription("bagger v-film")
-				.withCategory(Category.COMEDY)
+				.withMovieTitle("keke titel")
+				.withMovieDescription("bagger v-film")
 				.build();
 		
 	//Putting all movies in a list
@@ -148,24 +109,33 @@ public class GeneralServiceTest extends DatabaseTest {
 	}
 	
 	@Test
+	public void testRegisterCustomer() throws ParseException {
+		final int idOfCustomerToBeRegistered = 4;
+		final Customer customerOne = new Customer(idOfCustomerToBeRegistered, "Michael", "Boogerd", "MB", "MB123", "michael@boogerd.com");
+		
+		final Customer customerBefore = getCustomer(idOfCustomerToBeRegistered);
+		Assert.assertNull(customerBefore);
+		
+		generalService.registerCustomer(customerOne);
+
+		final Customer customerAfter = getCustomer(idOfCustomerToBeRegistered);
+		Assert.assertNotNull(customerAfter);
+		Assert.assertEquals(customerOne.getFirstName(), customerAfter.getFirstName());
+		Assert.assertEquals(customerOne.getLastName(), customerAfter.getLastName());
+		Assert.assertEquals(customerOne.getUsername(), customerAfter.getUsername());
+		Assert.assertEquals(customerOne.getPassword(), customerAfter.getPassword());
+		Assert.assertEquals(customerOne.getEmail(), customerAfter.getEmail());
+	}
+	
+	@Test
 	public void testAuthenticateCustomer() throws ParseException {
 	//Customers
-		final Customer customerOne = new Customer(0, "Bauke", "Mollema", "BM", "BM123", "bauke@mollema.com",
-				dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("09-06-2016"))),
-				dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))));
-		
-		final Customer customerTwo = new Customer(1, "Tom", "Dumoulin", "TD", "TD123", "tom@dumoulin.com",
-				dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("09-06-2016"))),
-				dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))));
-		
-		final Customer customerThree = new Customer(2, "Stef", "Clement", "SC", "SC123", "stef@clement.com",
-				dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("09-06-2016"))),
-				dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))));
+		final Customer customerOne = new Customer(0, "Bauke", "Mollema", "BM", "BM123", "bauke@mollema.com");
+		final Customer customerTwo = new Customer(1, "Tom", "Dumoulin", "TD", "TD123", "tom@dumoulin.com");
+		final Customer customerThree = new Customer(2, "Stef", "Clement", "SC", "SC123", "stef@clement.com");
 	
 	//The no-customer test-user
-		final Customer noCustomer = new Customer(3, "Chris", "Froome", "CF", "CF123", "chris@froome.com",
-				dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("09-06-2016"))),
-				dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))));
+		final Customer noCustomer = new Customer(3, "Chris", "Froome", "CF", "CF123", "chris@froome.com");
 		
 	//Putting all customers in a list
 		final List<Customer> dbCustomers = new ArrayList<>();
@@ -181,45 +151,88 @@ public class GeneralServiceTest extends DatabaseTest {
 	}
 	
 	@Test
-	public void testAuthenticateEmployee() throws ParseException {
-	//Employee
-		final Employee employeeOne = new Employee(0, "Wout", "Poels", "WP", "WP123", "wout@poels.com",
-				dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("09-06-2016"))),
-				dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))));
-		
-		
-		final Employee employeeTwo = new Employee(1, "Wilco", "Kelderman", "WK", "WK123", "wilco@kelderman.com",
-				dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("09-06-2016"))),
-				dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))));
-		
-		
-		final Employee employeeThree = new Employee(2, "Laurens", "tenDam", "LTD", "LTD123", "laurens@tendam.com",
-				dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("09-06-2016"))),
-				dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))));
-		
-	//The no-employee test-user
-		final Employee noEmployee = new Employee(3, "Tom", "Slagter", "TS", "TS123", "tom@slagter.com",
-				dateUtils.convertUtilDateToSqlDate(dateUtils.toDate(dateUtils.toDateFormat("09-06-2016"))),
-				dateUtils.convertUtilDateToSqlTime(dateUtils.toTime(dateUtils.toTimeFormat("20:00:00"))));
-		
-	//Putting all customers in a list
-		final List<Employee> dbEmployees = new ArrayList<>();
-		dbEmployees.add(0, employeeOne);
-		dbEmployees.add(1, employeeTwo);
-		dbEmployees.add(2, employeeThree);
-		
-	//Authentication control 
-		Assert.assertEquals(employeeOne ,generalService.authenticateEmployee(employeeOne, dbEmployees));
-		Assert.assertEquals(employeeTwo ,generalService.authenticateEmployee(employeeTwo, dbEmployees));
-		Assert.assertEquals(employeeThree ,generalService.authenticateEmployee(employeeThree, dbEmployees));
-		Assert.assertNotEquals(noEmployee ,generalService.authenticateEmployee(noEmployee, dbEmployees));
+	public void testAuthenticateUser() {
+		final Customer testUser = null;
+		Assert.assertEquals(false, generalService.authenticateUser(testUser));
+		final Customer testCustomer = new Customer(1, "Marcel", "Groothuis", "Manollo7G", "secret", "mjg@cerios.nl");
+		Assert.assertEquals(true, generalService.authenticateUser(testCustomer));
 	}
 	
-	@Test
-	public void testAuthenticateUser() {
-		final Employee testUser = null;
-		Assert.assertEquals(false, generalService.authenticateUser(testUser));
-		final Customer testCustomer = new Customer(1, "Marcel", "Groothuis", "Manollo7G", "secret", "mjg@cerios.nl", dateUtils.getCurrentSqlDate(), dateUtils.getCurrentSqlTime());
-		Assert.assertEquals(true, generalService.authenticateUser(testCustomer));
+	@Test 
+	public void testGenerateShowTableWithEmptyShowsAndMovies() throws ParseException, MovieNotFoundException {		
+		List<ShowsPresentationVO> emptyTodaysShowsTable = new ArrayList<ShowsPresentationVO>();
+		final List<Show> testShows = new ArrayList<>();
+		final List<Movie> testMovies = new ArrayList<>();		
+	
+	//todaysShowsTable vullen met lege shows en movies.
+		emptyTodaysShowsTable = generalService.generateShowTable(testShows, testMovies);
+
+	//Check eerste unittest
+		Assert.assertEquals(emptyTodaysShowsTable, generalService.generateShowTable(testShows, testMovies));
+		Assert.assertEquals(0, emptyTodaysShowsTable.size());
+	}
+	
+	@Test 
+	public void testGenerateShowTableWithDerbyShowsAndMovies() throws ParseException, MovieNotFoundException {		
+		List<ShowsPresentationVO> filledTodaysShowsTable = new ArrayList<ShowsPresentationVO>();	
+		
+		//Tweede unittest: lijsten maken met derby vulling After
+			final List<Show> shows = generalService.getShows();
+			final List<Movie> movies = generalService.getMovies();	
+			
+		//de todaysShowsTable vullen met de lege shows en movies.
+			filledTodaysShowsTable = generalService.generateShowTable(shows, movies);	
+			
+		//voorstellingen in tweede unittest
+			ShowsPresentationVO TheLegendOfTarzan = null;
+			ShowsPresentationVO TarzanTheApeMan = null;
+			ShowsPresentationVO Tarzan = null;	
+			ShowsPresentationVO WeddingCrashers = null;
+			ShowsPresentationVO BloodDiamond = null;
+			ShowsPresentationVO TheLionKing = null;	
+			ShowsPresentationVO Snatch = null;
+			
+			for (ShowsPresentationVO showsPresentationVO : filledTodaysShowsTable){
+				if(1 == showsPresentationVO.getMovie().getMovieId().intValue()){
+					TheLegendOfTarzan = showsPresentationVO;
+				}else if(2 == showsPresentationVO.getMovie().getMovieId().intValue()){
+					TarzanTheApeMan = showsPresentationVO;
+				}else if(3 == showsPresentationVO.getMovie().getMovieId().intValue()){
+					Tarzan = showsPresentationVO;
+				}else if(4 == showsPresentationVO.getMovie().getMovieId().intValue()){
+					WeddingCrashers = showsPresentationVO;
+				}else if(5 == showsPresentationVO.getMovie().getMovieId().intValue()){
+					BloodDiamond = showsPresentationVO;
+				}else if(6 == showsPresentationVO.getMovie().getMovieId().intValue()){
+					TheLionKing = showsPresentationVO;
+				}else if(7 == showsPresentationVO.getMovie().getMovieId().intValue()){
+					Snatch = showsPresentationVO;
+				}
+			}
+			Assert.assertEquals(filledTodaysShowsTable.size(), generalService.generateShowTable(shows, movies).size());
+			Assert.assertEquals(4, filledTodaysShowsTable.size());
+			Assert.assertEquals(1, TheLegendOfTarzan.getMovie().getMovieId().intValue());
+			Assert.assertEquals("The Legend of Tarzan (2016)", TheLegendOfTarzan.getMovie().getTitle());
+			Assert.assertEquals(1, TheLegendOfTarzan.getShowsPresentationVO().size());				
+			Assert.assertEquals(2, TarzanTheApeMan.getMovie().getMovieId().intValue());
+			Assert.assertEquals("Tarzan the Ape Man (1932)", TarzanTheApeMan.getMovie().getTitle());
+			Assert.assertEquals(3, TarzanTheApeMan.getShowsPresentationVO().size());
+			Assert.assertEquals(4, WeddingCrashers.getMovie().getMovieId().intValue());
+			Assert.assertEquals("Wedding Crashers", WeddingCrashers.getMovie().getTitle());
+			Assert.assertEquals(1, WeddingCrashers.getShowsPresentationVO().size());
+			Assert.assertEquals(5, BloodDiamond.getMovie().getMovieId().intValue());
+			Assert.assertEquals("Blood Diamond", BloodDiamond.getMovie().getTitle());
+			Assert.assertEquals(2, BloodDiamond.getShowsPresentationVO().size());
+			Assert.assertNull(Tarzan);
+			Assert.assertNull(TheLionKing);
+			Assert.assertNull(Snatch);
+		}
+	
+	
+	private Customer getCustomer(final int customerID) {
+		return generalService.getCustomers().stream()
+				.filter(c -> c.getCustomerId() == customerID)
+				.findAny()
+				.orElse(null);
 	}
 }

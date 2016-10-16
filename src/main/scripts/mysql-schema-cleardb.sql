@@ -107,6 +107,7 @@ CREATE TABLE IF NOT EXISTS `show_table` (
   `room_id` int(20) unsigned NOT NULL,
   `show_date` date NOT NULL,
   `show_time` time NOT NULL,
+  `chairs_sold` int(20) unsigned NOT NULL,
   PRIMARY KEY (`show_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
