@@ -110,6 +110,24 @@ public class CustomerDaoImpl{
         }
     }
 	
+	public int getRoomCapacityByRoomId(int roomId){
+		Room room = new Room();
+		try (final Connection connection = dataSource.getConnection()) {
+			final PreparedStatement preparedstatement = connection
+					.prepareStatement("SELECT capacity FROM room WHERE room_id = ?");
+			preparedstatement.setInt(1, roomId);
+			ResultSet resultSet = preparedstatement.executeQuery();
+			{
+				while (resultSet.next()) {
+					room.setCapacity(resultSet.getInt("capacity"));	
+				}
+			return room.getCapacity();
+			}
+		} catch (final SQLException e) {
+			throw new ServiceException("Something went terribly wrong while retrieving the room.", e);
+		}
+	}
+	
 	public void addTransaction(Transaction transaction) {
 		try (final Connection connection = dataSource.getConnection();
 				final PreparedStatement preparedStatement = connection.prepareStatement(
@@ -142,16 +160,16 @@ public class CustomerDaoImpl{
         }
     }
 	
-	public void updateChairsSold(int chairsSold, int showingId) {
+	public void updateChairsSold(int chairsSold, int showId) {
 
-		String updateSQL = "UPDATE show_table SET chairs_sold = chairs_sold +? WHERE show_id = ?";
+		String updateSQL = "UPDATE show_table SET available_places = available_places + ? WHERE show_id = ?";
 
 		try {
 			final Connection connection = dataSource.getConnection();
 			final PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
 
 			preparedStatement.setInt(1, (chairsSold));
-			preparedStatement.setInt(2, showingId);
+			preparedStatement.setInt(2, showId);
 			preparedStatement.executeUpdate();
 
 			LOG.debug("Chairs_sold is updated.");

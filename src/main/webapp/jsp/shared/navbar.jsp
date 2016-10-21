@@ -18,7 +18,7 @@
 	<div class="navbar">
 		<div class="navbar-buttons-wrapper">
 			<div class="navbar-button">
-				<a href="/cerioscoop-web/index.jsp"> <span
+				<a id="home-button" href="/cerioscoop-web/index.jsp"> <span
 					class="navbar-button-text">CERIOSCOOP</span>
 				</a>
 			</div>
@@ -42,7 +42,7 @@
 			<% } else {
 			%>
 				<div class="navbar-button">
-				<a href="/cerioscoop-web/LogOutServlet"> <span
+				<a id="navbar-logout" href="/cerioscoop-web/LogOutServlet"> <span
 					class="navbar-button-text">LOGOUT</span>
 				</a>
 			</div>

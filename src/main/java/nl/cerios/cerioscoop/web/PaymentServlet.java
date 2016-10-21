@@ -48,8 +48,13 @@ public class PaymentServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		//TODO check Availableplaces tov reserved_places - capacity;
+		//TODO check Minimaal 1 ticket is ingevoerd
+		//TODO check Maximum aantal aan tickets dat kan worden gekocht
+		
 		//Get reserved places from BuyTickets
-		reservedPlaces = Integer.parseInt(request.getParameter("reserved_places"));			
+		reservedPlaces = Integer.parseInt(request.getParameter("reserved_places"));	
+		
 		int showId = Integer.parseInt(request.getParameter("showId"));
 		show = genericDao.getShowById(showId);
 		totalPrice = customerService.calculateTotalPrice(show, reservedPlaces);
@@ -93,7 +98,7 @@ public class PaymentServlet extends HttpServlet {
 			customerDao.addTransaction(transaction);
 			
 			//TODO update_available_chairs in show_table
-			
+			customerDao.updateChairsSold(reservedPlaces, show.getShowId());
 			
 			out.println("<script type=\"text/javascript\">");
 			out.println("alert('Thanks for buying the tickets!');");

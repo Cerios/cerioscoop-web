@@ -11,7 +11,7 @@ public class MoviePage {
 	private WebElement movieTitle;
 	
 	@FindBy(id = "movie-description")
-	private WebElement MovieDescription;
+	private WebElement movieDescription;
 	
 
 	public MoviePage(WebDriver driver) {
@@ -24,6 +24,6 @@ public class MoviePage {
 	}
 	
 	public String getMovieDescriptionFromMoviePage() {
-		 return MovieDescription.getText();
+		 return movieDescription.getText();
 	}
 }

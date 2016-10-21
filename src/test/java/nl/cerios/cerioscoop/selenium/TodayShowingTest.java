@@ -82,7 +82,6 @@ public class TodayShowingTest extends SeleniumTest {
 					}
 	    		}
 			}
-		
 	}
 	
 	@Before
@@ -94,7 +93,7 @@ public class TodayShowingTest extends SeleniumTest {
 	@Test
 	public void testNavigateToHomePage(){
 		Assert.assertNotNull(homePage);
-		Assert.assertEquals("Today Showing", getWebDriver().getTitle());
+		Assert.assertEquals("Today Showing", homePage.getPageTitle());
 	}
 	
 	@Test
@@ -119,7 +118,7 @@ public class TodayShowingTest extends SeleniumTest {
 			// staat movie.getTitle() op het scherm?
 			if(getWebDriver().getTitle().contains("Today Showing")){
 				Assert.assertTrue(getWebDriver().getPageSource().contains(movie.getTitle()));
-				LOG.info(movie.getTitle() + " is displayed on th screen.");
+				LOG.info(movie.getTitle() + " is displayed on the screen.");
 			}
 		}
 	}
@@ -139,7 +138,7 @@ public class TodayShowingTest extends SeleniumTest {
 		}
 	}
 	
-	//Functional
+	//Functional refactor amount
 	@Test
 	public void checkAmountOfDisplayedMoviesVersusTodaysMoviesInDatabase(){
 		List<WebElement> displayedMovies = new ArrayList<WebElement>();

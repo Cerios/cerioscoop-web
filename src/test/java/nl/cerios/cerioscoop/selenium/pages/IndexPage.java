@@ -12,37 +12,33 @@ public class IndexPage {
 
 	@FindBy(id = "navbar-login")
 	private WebElement loginNavigationLink;
-	
 	@FindBy(id = "navbar-register")
 	private WebElement registerNavigationLink;
-
 	@FindBy(id = "loginUsername")
 	private WebElement usernameTextfield;
-
 	@FindBy(id = "loginPassword")
 	private WebElement passwordTextfield;
-
 	@FindBy(id = "login-button")
 	private WebElement loginButton;
 	
+	//Movies
 	@FindBy(id = "movietitlebymovieid1") //Is movieId
 	private WebElement theLegendOfTarzan;
-	
 	@FindBy(id = "movietitlebymovieid2") //Is movieId
 	private WebElement tarzanTheApeMan;
-	
 	@FindBy(id = "movietitlebymovieid4") //Is movieId
 	private WebElement weddingCrashers;
-	
 	@FindBy(id = "movietitlebymovieid5") //Is movieId
 	private WebElement bloodDiamond;
-	
 	@FindBy(id = "movietitlebymovieid6") //Is movieId
 	private WebElement theLionKing;
-	
 	@FindBy(id = "movietitlebymovieid7") //Is movieId
 	private WebElement snatch;
 
+	//Shows
+	@FindBy(id="showtimebyshowid6movieid6")
+	private WebElement theLionKingTienUur;
+	
 	// constructor
 	public IndexPage(WebDriver driver) {
 		this.driver = driver;
@@ -83,8 +79,19 @@ public class IndexPage {
 		return new MoviePage(driver);
 	}
 	
+	public BuyTicketsPage navigateToBuyTicketsPage(String showId){
+		if (theLionKingTienUur.isDisplayed() && showId.equals("6")){
+			theLionKingTienUur.click();			
+		}
+		return new BuyTicketsPage(driver);
+	}
+	
 	public RegisterPage navigateToRegisterPage() {
 		registerNavigationLink.click();
 		return new RegisterPage(driver);
+	}
+	
+	public String getPageTitle(){
+		return driver.getTitle();
 	}
 }

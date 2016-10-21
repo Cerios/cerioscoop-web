@@ -32,7 +32,7 @@
 			<th>Location</th>
 			<th>Date</th>
 			<th>Time</th>
-			<th>Reserved places</th>
+			<th>Purchased</th>
 
 		</thead>
 		<tbody>

@@ -19,7 +19,7 @@
 	<table>
 		<thead>
 			<th>Total price</th>
-			<th>Bankaccount</th>
+			<th>IBAN</th>
 		</thead>
 		<tbody>
 				<tr>
@@ -28,9 +28,6 @@
 						<form method="POST" action="/cerioscoop-web/PaymentServlet">
 						<input id="bankaccount" type="text" name="bankaccount" placeholder="Enter your bankaccount">
 						<input class="button" id="paybutton" type="submit" name="submitit" value="Pay"> 
-						</form>
-						<form action="/cerioscoop-web">
-							<input class="button" id="cancelpaybutton" type="submit" value="Cancel" />
 						</form>
 					</td>
 				</tr>

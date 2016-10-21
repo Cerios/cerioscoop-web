@@ -20,6 +20,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 /**
  * @author rsanders
+ * http://stackoverflow.com/questions/2839321/connect-java-to-a-mysql-database
  *
  * TODO Create and Drop Database "cerioscoop_db", zorg dat er een cerioscoop_db aanwezig is!
  *  

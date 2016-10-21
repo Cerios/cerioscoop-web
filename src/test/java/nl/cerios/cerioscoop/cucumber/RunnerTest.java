@@ -11,9 +11,15 @@ import nl.cerios.testutil.SeleniumTest;
  * class SeleniumTest, so all Cucumber tests are skipped (without failing) when
  * the requirements for Selenium tests are not met, i.e. the web server is not
  * running or the web driver is not installed).
+ * 
+ * We will store the reports in the target map.
  */
 @RunWith(Cucumber.class)
-@CucumberOptions(features = { "src/test/resources/" })
-public class RunnerTest extends SeleniumTest {
-
+@CucumberOptions(
+		plugin = {"pretty", "html:target/html/", "json:target/json/output.json"},  //Report test results
+		features = { "src/test/resources/features/" },
+		tags = {"@MoviePresentation, @Buytickets"}
+		)
+public class RunnerTest extends SeleniumTest{
+	
 }
