@@ -6,13 +6,13 @@ import org.openqa.selenium.By;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import nl.cerios.cerioscoop.service.GeneralService;
+import nl.cerios.cerioscoop.service.ShowService;
 import nl.cerios.testutil.SeleniumTest;
 
 public class RegisterCustomerSteps extends SeleniumTest {
 
-	private GeneralService generalService = new GeneralService();
-	private String userName = generalService.generateRandomUsername();
+	private ShowService showService = new ShowService();
+	private String userName = showService.generateRandomUsername();
 	
 	@Given("^I am on the cerioscoop site$")
 	public void navigateToCerioscoopSite() throws InterruptedException {

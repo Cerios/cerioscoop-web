@@ -1,4 +1,4 @@
-package nl.cerios.cerioscoop.service;
+package nl.cerios.cerioscoop.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -21,11 +21,12 @@ import nl.cerios.cerioscoop.domain.Movie;
 import nl.cerios.cerioscoop.domain.MovieBuilder;
 import nl.cerios.cerioscoop.domain.Room;
 import nl.cerios.cerioscoop.domain.Show;
+import nl.cerios.cerioscoop.service.ServiceException;
 
 @Stateless
-public class GenericDaoImpl{
+public class ShowDaoImpl{
 
-	private static final Logger LOG = LoggerFactory.getLogger(GenericDaoImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ShowDaoImpl.class);
 	
 	@Resource(name = "jdbc/cerioscoop")
 	private DataSource dataSource;
@@ -154,4 +155,22 @@ public class GenericDaoImpl{
             throw new ServiceException("Something went wrong while retrieving the transactions.", e);
         }
     }
+    
+    public int getRoomCapacityByRoomId(int roomId){
+		int roomCapacity = 0;
+		try (final Connection connection = dataSource.getConnection()) {
+			final PreparedStatement preparedstatement = connection
+					.prepareStatement("SELECT capacity FROM room WHERE room_id = ?");
+			preparedstatement.setInt(1, roomId);
+			ResultSet resultSet = preparedstatement.executeQuery();
+			{
+				while (resultSet.next()) {
+					roomCapacity = resultSet.getInt("capacity");	
+				}
+			return roomCapacity;
+			}
+		} catch (final SQLException e) {
+			throw new ServiceException("Something went terribly wrong while retrieving the room.", e);
+		}
+	}
 }

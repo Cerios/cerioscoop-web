@@ -17,11 +17,11 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.cerios.cerioscoop.dao.ShowDaoImpl;
 import nl.cerios.cerioscoop.domain.Movie;
 import nl.cerios.cerioscoop.domain.MovieBuilder;
 import nl.cerios.cerioscoop.domain.Show;
 import nl.cerios.cerioscoop.selenium.pages.IndexPage;
-import nl.cerios.cerioscoop.service.GenericDaoImpl;
 import nl.cerios.cerioscoop.valueobjects.ShowPresentationVO;
 import nl.cerios.cerioscoop.valueobjects.ShowsPresentationVO;
 import nl.cerios.testutil.SeleniumTest;
@@ -32,7 +32,7 @@ public class TodayShowingTest extends SeleniumTest {
 	private static List<ShowsPresentationVO> todaysShowsTable = new ArrayList<>();
 	private static List<Movie> todaysMovieTitles = new ArrayList<>();
 	private static final String currentDate = LocalDate.now().toString();
-	private static final Logger LOG = LoggerFactory.getLogger(GenericDaoImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ShowDaoImpl.class);
 
 	@BeforeClass
 	public static void initDataSets() throws SQLException {	

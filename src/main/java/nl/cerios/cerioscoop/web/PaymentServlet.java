@@ -14,14 +14,14 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.cerios.cerioscoop.dao.ShowDaoImpl;
+import nl.cerios.cerioscoop.dao.TransactionDaoImpl;
 import nl.cerios.cerioscoop.domain.Customer;
 import nl.cerios.cerioscoop.domain.Show;
 import nl.cerios.cerioscoop.domain.Transaction;
 import nl.cerios.cerioscoop.domain.User;
-import nl.cerios.cerioscoop.service.CustomerDaoImpl;
-import nl.cerios.cerioscoop.service.CustomerService;
-import nl.cerios.cerioscoop.service.GenericDaoImpl;
 import nl.cerios.cerioscoop.service.SecurityService;
+import nl.cerios.cerioscoop.service.TransactionService;
 
 /**
  * Servlet implementation class PaymentServlet
@@ -30,18 +30,18 @@ import nl.cerios.cerioscoop.service.SecurityService;
 public class PaymentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Show show;
-    private int reservedPlaces;
+    private int reservedPlaces;//TODO er mogen geen instance variables in de servlets gemaakt worden, dit wil je vermijden!
     private float totalPrice;
-    private static final Logger LOG = LoggerFactory.getLogger(GenericDaoImpl.class);
-	
+    private static final Logger LOG = LoggerFactory.getLogger(ShowDaoImpl.class);
+    
     @EJB
-	private CustomerDaoImpl customerDao;
+	private ShowDaoImpl showDao;
+    
+    @EJB
+	private TransactionDaoImpl transcationDao;
 	
 	@EJB
-	private GenericDaoImpl genericDao;
-
-	@EJB
-	private CustomerService customerService;
+	private TransactionService transactionService;
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -56,8 +56,11 @@ public class PaymentServlet extends HttpServlet {
 		reservedPlaces = Integer.parseInt(request.getParameter("reserved_places"));	
 		
 		int showId = Integer.parseInt(request.getParameter("showId"));
-		show = genericDao.getShowById(showId);
-		totalPrice = customerService.calculateTotalPrice(show, reservedPlaces);
+		show = showDao.getShowById(showId);
+		
+		totalPrice = transactionService.calculateTotalPrice(show, reservedPlaces);
+		
+		//Moet in de session worden opgeslagen!
 		request.setAttribute("total_price", totalPrice);
 		request.getRequestDispatcher("/jsp/payment-ticket.jsp").forward(request, response);
 	}
@@ -95,10 +98,10 @@ public class PaymentServlet extends HttpServlet {
 			transaction.setReservedChairs(reservedPlaces);
 			transaction.setShow(show);
 			transaction.setTotalPrice(totalPrice);
-			customerDao.addTransaction(transaction);
+			transcationDao.addTransaction(transaction);
 			
 			//TODO update_available_chairs in show_table
-			customerDao.updateChairsSold(reservedPlaces, show.getShowId());
+			transcationDao.updateChairsSold(reservedPlaces, show.getShowId());
 			
 			out.println("<script type=\"text/javascript\">");
 			out.println("alert('Thanks for buying the tickets!');");

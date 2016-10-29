@@ -27,9 +27,9 @@
 		</thead>
 		<tbody>
 				<tr>
-					<td id="movie-title"> ${show.getMovie().getTitle()}</td>
-					<td id="room-name"> ${show.getRoom().getRoomName()}</td>
-					<td id="show-price"> ${show.getShowPrice()}</td>
+					<td id="movie-title"> ${show.movie.title}</td>
+					<td id="room-name"> ${show.room.roomName}</td>
+					<td id="show-price"> ${show.showPrice}</td>
 					<td>
 						<form method="GET" action="/cerioscoop-web/PaymentServlet">
 						<input id="reserved_places" type="text" name="reserved_places" placeholder="Enter your ticket amount"> 

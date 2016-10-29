@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
+import nl.cerios.cerioscoop.dao.CustomerDaoImpl;
+import nl.cerios.cerioscoop.dao.ShowDaoImpl;
 import nl.cerios.cerioscoop.domain.Customer;
 import nl.cerios.cerioscoop.domain.Movie;
 import nl.cerios.cerioscoop.domain.MovieBuilder;
@@ -22,10 +24,10 @@ import nl.cerios.testutil.DerbyDatabaseTest;
 public class GeneralServiceTest extends DerbyDatabaseTest {
 
 	@InjectMocks
-	private GeneralService generalService;
+	private ShowService showService;
 	
 	@InjectMocks
-	private GenericDaoImpl genericDao;
+	private ShowDaoImpl genericDao;
 	
 	@InjectMocks
 	private CustomerDaoImpl customerDao;
@@ -80,9 +82,9 @@ public class GeneralServiceTest extends DerbyDatabaseTest {
 		listOfShows.add(2, showThree);
 		
 	//First show after the current date control 
-		Assert.assertEquals(showOne.getShowDate() ,generalService.getFirstShowforToday(listOfShows).getShowDate());
-		Assert.assertNotEquals(showTwo.getShowDate() ,generalService.getFirstShowforToday(listOfShows).getShowDate());
-		Assert.assertNotEquals(showThree.getShowDate() ,generalService.getFirstShowforToday(listOfShows).getShowDate());
+		Assert.assertEquals(showOne.getShowDate() ,showService.getFirstShowforToday(listOfShows).getShowDate());
+		Assert.assertNotEquals(showTwo.getShowDate() ,showService.getFirstShowforToday(listOfShows).getShowDate());
+		Assert.assertNotEquals(showThree.getShowDate() ,showService.getFirstShowforToday(listOfShows).getShowDate());
 	}
 	@Test
 	public void testGetMovieByMovieId() throws MovieNotFoundException{
@@ -110,9 +112,9 @@ public class GeneralServiceTest extends DerbyDatabaseTest {
 		listOfMovies.add(2, movieThree);
 		
 	//Movie control 
-			Assert.assertEquals(movieOne ,generalService.getMovieByMovieId(movieOne.getMovieId().intValue(), listOfMovies));
-			Assert.assertEquals(movieTwo ,generalService.getMovieByMovieId(movieTwo.getMovieId().intValue(), listOfMovies));
-			Assert.assertEquals(movieThree ,generalService.getMovieByMovieId(movieThree.getMovieId().intValue(), listOfMovies));
+			Assert.assertEquals(movieOne ,showService.getMovieByMovieId(movieOne.getMovieId().intValue(), listOfMovies));
+			Assert.assertEquals(movieTwo ,showService.getMovieByMovieId(movieTwo.getMovieId().intValue(), listOfMovies));
+			Assert.assertEquals(movieThree ,showService.getMovieByMovieId(movieThree.getMovieId().intValue(), listOfMovies));
 	}
 	
 	@Test
@@ -151,18 +153,18 @@ public class GeneralServiceTest extends DerbyDatabaseTest {
 		dbCustomers.add(2, customerThree);
 		
 	//Authentication control 
-		Assert.assertEquals(customerOne ,generalService.authenticateCustomer(customerOne, dbCustomers));
-		Assert.assertEquals(customerTwo ,generalService.authenticateCustomer(customerTwo, dbCustomers));
-		Assert.assertEquals(customerThree ,generalService.authenticateCustomer(customerThree, dbCustomers));
-		Assert.assertNotEquals(noCustomer ,generalService.authenticateCustomer(noCustomer, dbCustomers));
+		Assert.assertEquals(customerOne ,showService.authenticateCustomer(customerOne, dbCustomers));
+		Assert.assertEquals(customerTwo ,showService.authenticateCustomer(customerTwo, dbCustomers));
+		Assert.assertEquals(customerThree ,showService.authenticateCustomer(customerThree, dbCustomers));
+		Assert.assertNotEquals(noCustomer ,showService.authenticateCustomer(noCustomer, dbCustomers));
 	}
 	
 	@Test
 	public void testAuthenticateUser() {
 		final Customer testUser = null;
-		Assert.assertEquals(false, generalService.authenticateUser(testUser));
+		Assert.assertEquals(false, showService.authenticateUser(testUser));
 		final Customer testCustomer = new Customer(1, "Marcel", "Groothuis", "Manollo7G", "secret", "mjg@cerios.nl");
-		Assert.assertEquals(true, generalService.authenticateUser(testCustomer));
+		Assert.assertEquals(true, showService.authenticateUser(testCustomer));
 	}
 	
 	@Test 
@@ -172,10 +174,10 @@ public class GeneralServiceTest extends DerbyDatabaseTest {
 		final List<Movie> testMovies = new ArrayList<>();		
 	
 	//todaysShowsTable vullen met lege shows en movies.
-		emptyTodaysShowsTable = generalService.generateShowTable(testShows, testMovies);
+		emptyTodaysShowsTable = showService.generateShowTable(testShows, testMovies);
 
 	//Check eerste unittest
-		Assert.assertEquals(emptyTodaysShowsTable, generalService.generateShowTable(testShows, testMovies));
+		Assert.assertEquals(emptyTodaysShowsTable, showService.generateShowTable(testShows, testMovies));
 		Assert.assertEquals(0, emptyTodaysShowsTable.size());
 	}
 		
@@ -188,7 +190,7 @@ public class GeneralServiceTest extends DerbyDatabaseTest {
 			final List<Movie> movies = genericDao.getMovies();	
 			
 		//de todaysShowsTable vullen met de lege shows en movies.
-			filledTodaysShowsTable = generalService.generateShowTable(shows, movies);	
+			filledTodaysShowsTable = showService.generateShowTable(shows, movies);	
 			
 		//voorstellingen in tweede unittest
 			ShowsPresentationVO TheLegendOfTarzan = null;
@@ -216,7 +218,7 @@ public class GeneralServiceTest extends DerbyDatabaseTest {
 					Snatch = showsPresentationVO;
 				}
 			}
-			Assert.assertEquals(filledTodaysShowsTable.size(), generalService.generateShowTable(shows, movies).size());
+			Assert.assertEquals(filledTodaysShowsTable.size(), showService.generateShowTable(shows, movies).size());
 			Assert.assertEquals(6, filledTodaysShowsTable.size());
 			Assert.assertEquals(1, TheLegendOfTarzan.getMovie().getMovieId().intValue());
 			Assert.assertEquals("The Legend of Tarzan", TheLegendOfTarzan.getMovie().getTitle());

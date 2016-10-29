@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nl.cerios.cerioscoop.service.GeneralService;
+import nl.cerios.cerioscoop.service.ShowService;
 import nl.cerios.cerioscoop.valueobjects.ShowsPresentationVO;
 
 /**
@@ -21,10 +21,10 @@ public class NowShowingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@EJB
-	private GeneralService generalService;
+	private ShowService showService;
 
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-		List<ShowsPresentationVO> todaysShowsTable = generalService.createTodaysShowsTable();
+		List<ShowsPresentationVO> todaysShowsTable = showService.createTodaysShowsTable();
 		request.setAttribute("todaysShowsTable", todaysShowsTable);
 		
 		// route to jsp

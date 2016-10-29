@@ -15,21 +15,21 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.cerios.cerioscoop.dao.TransactionDaoImpl;
 import nl.cerios.cerioscoop.domain.Transaction;
 import nl.cerios.cerioscoop.domain.User;
-import nl.cerios.cerioscoop.service.CustomerDaoImpl;
 
 /**
  * Servlet implementation class TransactionServlet
  */
 @WebServlet("/TicketHistoryServlet")
-public class TicketHistoryServlet extends HttpServlet {
+public class TransactionServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOG = LoggerFactory.getLogger(TicketHistoryServlet.class);
+	private static final Logger LOG = LoggerFactory.getLogger(TransactionServlet.class);
 
 	@EJB
-	private CustomerDaoImpl customerDao;
+	private TransactionDaoImpl transcationDao;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -40,7 +40,7 @@ public class TicketHistoryServlet extends HttpServlet {
 			LOG.debug(customer.toString());
 			String a = customer.getUsername();
 			LOG.debug(a);
-			transactions = customerDao.getTransactionByUsername(a);
+			transactions = transcationDao.getTransactionByUsername(a);
 			request.setAttribute("transactions", transactions);
 			getServletContext().getRequestDispatcher("/jsp/ticket-history.jsp").forward(request, response);
 		} else {
@@ -50,8 +50,6 @@ public class TicketHistoryServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }

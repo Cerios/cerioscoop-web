@@ -7,7 +7,7 @@
 <%@page import="java.text.ParseException"%>
 <%@page import="java.util.List"%>
 <%@page import="nl.cerios.cerioscoop.domain.Show"%>
-<%@page import="nl.cerios.cerioscoop.service.GeneralService"%>
+<%@page import="nl.cerios.cerioscoop.service.ShowService"%>
 <%@page import="nl.cerios.cerioscoop.valueobjects.ShowsPresentationVO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>

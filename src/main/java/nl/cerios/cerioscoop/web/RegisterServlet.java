@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import nl.cerios.cerioscoop.dao.CustomerDaoImpl;
 import nl.cerios.cerioscoop.domain.Customer;
 import nl.cerios.cerioscoop.helper.ErrorMessage;
 import nl.cerios.cerioscoop.helper.RegisterAttributes;
-import nl.cerios.cerioscoop.service.CustomerDaoImpl;
 import nl.cerios.cerioscoop.service.CustomerService;
-import nl.cerios.cerioscoop.service.GeneralService;
+import nl.cerios.cerioscoop.service.ShowService;
 import nl.cerios.cerioscoop.service.SecurityService;
 
 /**
@@ -40,7 +40,7 @@ public class RegisterServlet extends HttpServlet {
 	private static final String EMAIL_VALIDATION_MESSAGE = "Enter valid email (min 6 characters)";
 
 	@EJB
-	private GeneralService generalService;
+	private ShowService showService;
 	
 	@EJB
 	private CustomerDaoImpl customerDao;

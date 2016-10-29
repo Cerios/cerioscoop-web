@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.cerios.cerioscoop.dao.ShowDaoImpl;
 import nl.cerios.cerioscoop.domain.Customer;
 import nl.cerios.cerioscoop.domain.Movie;
 import nl.cerios.cerioscoop.domain.Show;
@@ -20,12 +21,12 @@ import nl.cerios.cerioscoop.valueobjects.ShowPresentationVO;
 import nl.cerios.cerioscoop.valueobjects.ShowsPresentationVO;
 
 @Stateless										//Stateless is de status van de gevulde opjecten. Best Practice is stateless.
-public class GeneralService {
+public class ShowService {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(GeneralService.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ShowService.class);
 	
 	@EJB
-	private GenericDaoImpl genericDao;
+	private ShowDaoImpl genericDao;
 	
 	/**
 	 * Returns a first showing record.
@@ -113,6 +114,12 @@ public class GeneralService {
 	}
 	
 	
+	/**
+	 * @author rsanders
+	 *
+	 *http://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property
+	 *http://stackoverflow.com/questions/4938626/moving-items-around-in-an-arraylist
+	 */
 	public class CustomComparator implements Comparator<Show> { 
 		
 		@Override
