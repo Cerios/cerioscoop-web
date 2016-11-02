@@ -32,7 +32,7 @@
 					<td id="show-price"> ${show.showPrice}</td>
 					<td>
 						<form method="GET" action="/cerioscoop-web/PaymentServlet">
-						<input id="reserved_places" type="text" name="reserved_places" placeholder="Enter your ticket amount"> 
+						<input id="reserved_places" type="text" name="number_of_tickets" placeholder="Enter the number of tickets"> 
 						<input id="showId"type="hidden" name="showId" value=${show.showId}>
 						<input class="button" id="buybutton" type="submit" name="submitit" value="Buy">
 						</form>

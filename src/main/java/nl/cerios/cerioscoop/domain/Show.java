@@ -9,7 +9,7 @@ public class Show {
 	private Room room;
 	private Date showDate;
 	private Time showTime;
-	private int availablePlaces;
+	private int ticketsSold;
 	private float showPrice;
 	
 	public Show() {
@@ -22,20 +22,20 @@ public class Show {
 		this.showTime = showTime;
 	}
 	
-	public Show(final int showId, final Movie movie,final Date showDate, final Time showTime , final int availablePlaces) {
+	public Show(final int showId, final Movie movie,final Date showDate, final Time showTime , final int ticketsSold) {
 		this.showId = showId;
 		this.movie = movie;
 		this.showDate = showDate;
 		this.showTime = showTime;
-		this.availablePlaces = availablePlaces;
+		this.ticketsSold = ticketsSold;
 	}
-	public Show(final int showId, final Movie movie, final Room room, final Date showDate, final Time showTime, final int availablePlaces, final float showPrice) {
+	public Show(final int showId, final Movie movie, final Room room, final Date showDate, final Time showTime, final int ticketsSold, final float showPrice) {
 		this.showId = showId;
 		this.movie = movie;
 		this.room = room; 
 		this.showDate = showDate;
 		this.showTime = showTime;
-		this.availablePlaces = availablePlaces;
+		this.ticketsSold = ticketsSold;
 		this.showPrice = showPrice;
 	}
 	public int getShowId() {
@@ -68,11 +68,11 @@ public class Show {
 	public void setShowTime(final Time showTime) {
 		this.showTime = showTime;
 	}
-	public int getAvailablePlaces() {
-		return availablePlaces;
+	public int getTicketsSold() {
+		return ticketsSold;
 	}
-	public void setAvailablePlaces(int availablePlaces) {
-		this.availablePlaces = availablePlaces;
+	public void setTicketsSold(int ticketsSold) {
+		this.ticketsSold = ticketsSold;
 	}
 	public float getShowPrice() {
 		return showPrice;

@@ -39,7 +39,7 @@ INSERT INTO `movie` (`movie_id`, `title`, `movie_description`) VALUES
 -- Dumpen data van tabel cerioscoop.show_transaction: ~3 rows (ongeveer)
 DELETE FROM `show_transaction`;
 /*!40000 ALTER TABLE `show_transaction` DISABLE KEYS */;
-INSERT INTO `show_transaction` (`transaction_id`, `customer_id`, `show_id`, `bankaccount`, `reserved_places`, `total_price`) VALUES
+INSERT INTO `show_transaction` (`transaction_id`, `customer_id`, `show_id`, `bankaccount`, `number_of_tickets`, `total_price`) VALUES
 	(1, 2, 1, 'NL32INGB1234567890', 5, 50),
 	(2, 1, 7, 'NL32INGB2234567890', 2, 20),
 	(3, 3, 6, 'NL32INGB3234567890', 3, 30),
@@ -60,14 +60,14 @@ INSERT INTO `room` (`room_id`, `room_name`, `capacity`) VALUES
 -- Dumpen data van tabel cerioscoop.show: ~10 rows (ongeveer)
 DELETE FROM `show_table`;
 /*!40000 ALTER TABLE `show_table` DISABLE KEYS */;
-INSERT INTO `show_table` (`show_id`,`movie_id`, `room_id`, `show_date`, `show_time`, `available_places`, `show_price`) VALUES
-	(1, 1, 1, CURDATE(), '12:00:00', 50, 10),
-	(2, 2, 1, CURDATE(), '21:00:00', 50, 20),
-	(3, 4, 2, CURDATE(), '16:00:00', 20, 10),
-	(4, 4, 1, CURDATE(), '20:00:00', 50, 20),
-	(5, 5, 1, CURDATE(), '21:00:00', 50, 20),
-	(6, 6, 2, CURDATE(), '10:00:00', 20, 10),
-	(7, 7, 1, CURDATE(), '15:00:00', 50, 10);
+INSERT INTO `show_table` (`show_id`,`movie_id`, `room_id`, `show_date`, `show_time`, `tickets_sold`, `show_price`) VALUES
+	(1, 1, 1, CURDATE(), '12:00:00', 0, 10),
+	(2, 2, 1, CURDATE(), '21:00:00', 0, 20),
+	(3, 4, 2, CURDATE(), '16:00:00', 0, 10),
+	(4, 4, 1, CURDATE(), '20:00:00', 0, 20),
+	(5, 5, 1, CURDATE(), '21:00:00', 0, 20),
+	(6, 6, 2, CURDATE(), '10:00:00', 0, 10),
+	(7, 7, 1, CURDATE(), '15:00:00', 0, 10);
 /*!40000 ALTER TABLE `show_table` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

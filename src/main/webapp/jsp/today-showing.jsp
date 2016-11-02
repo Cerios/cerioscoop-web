@@ -49,7 +49,7 @@
 					<% for(ShowPresentationVO show : showsPresentationVO.getShowsPresentationVO()){ 
 					   if(showsPresentationVO.getShowsPresentationVO() != null){ 
 					   String soldOut; 
-					   if(show.getSoldOut()){soldOut = "*";}else{soldOut ="";}{ %>
+					   if(show.getSoldOut()){soldOut = "*Uitverkocht*";}else{soldOut ="";}{ %>
 					<td><form method="POST" action="/cerioscoop-web/BuyTicketServlet">
 						<input type="hidden" name="showId" value=<%=showsPresentationVO.getShowsPresentationVO().get(0).getShow().getShowId()%>>
 						<input id="showtimebyshowid<%=show.getShow().getShowId()%>movieid<%=show.getShow().getMovie().getMovieId().intValue()%>" class="button" type="submit" value=<%=show.getShow().getShowTime()+soldOut%>></form>

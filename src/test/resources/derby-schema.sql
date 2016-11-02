@@ -28,7 +28,7 @@ CREATE TABLE show_table (
   room_id INTEGER NOT NULL,
   show_date DATE NOT NULL,
   show_time TIME NOT NULL,
-  available_places INTEGER NOT NULL,
+  tickets_sold INTEGER NOT NULL,
   show_price FLOAT NOT NULL,
   PRIMARY KEY (show_id)
 );
@@ -38,7 +38,7 @@ CREATE TABLE show_transaction (
   customer_id INTEGER NOT NULL,
   show_id INTEGER NOT NULL,
   bankaccount varchar(34) NOT NULL,
-  reserved_places INTEGER NOT NULL,
+  number_of_tickets INTEGER NOT NULL,
   total_price FLOAT NOT NULL,
   PRIMARY KEY (transaction_id)
 );

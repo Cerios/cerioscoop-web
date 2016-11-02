@@ -12,7 +12,7 @@ INSERT INTO movie (title, movie_description) VALUES
 	('The Lion King', 'A story about a lion called Simba.'),
 	('Snatch', 'A story about a diamond that all the pikeys want to have.');
 
-INSERT INTO show_transaction (customer_id, show_id, bankaccount, reserved_places, total_price) VALUES
+INSERT INTO show_transaction (customer_id, show_id, bankaccount, number_of_tickets, total_price) VALUES
 	(2, 1, 'NL32INGB1234567890', 5, 50),
 	(1, 7, 'NL32INGB2234567890', 2, 20),
 	(3, 6, 'NL32INGB3234567890', 3, 30),
@@ -22,7 +22,7 @@ INSERT INTO room (room_name, capacity) VALUES
 	('red room', 50),
 	('blue room', 20);
 
-INSERT INTO show_table (movie_id, room_id, show_date, show_time, available_places, show_price) VALUES
+INSERT INTO show_table (movie_id, room_id, show_date, show_time, tickets_sold, show_price) VALUES
 		(1, 1, '2016-10-04', '12:00:00', 50, 10),
 		(2, 1, '2016-10-04', '21:00:00', 50, 20),
 		(4, 2, '2016-10-04', '16:00:00', 20, 10),

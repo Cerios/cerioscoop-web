@@ -32,13 +32,13 @@ public class TransactionDaoImpl {
 	public List<Transaction> getTransactionByUsername(String username){
     	final List<Transaction> transactions = new ArrayList<>();
     	try (final Connection connection = dataSource.getConnection()) {
-			final PreparedStatement preparedStatement = connection.prepareStatement("SELECT M.title, R.room_name, S.show_date, S.show_time, T.reserved_places FROM show_transaction T INNER JOIN customer C on C.customer_id = T.customer_id INNER JOIN show_table S on S.show_id = T.show_id INNER JOIN movie M on M.movie_id = S.movie_id INNER JOIN room R on R.room_id = S.room_id WHERE C.username = ?");
+			final PreparedStatement preparedStatement = connection.prepareStatement("SELECT M.title, R.room_name, S.show_date, S.show_time, T.number_of_tickets FROM show_transaction T INNER JOIN customer C on C.customer_id = T.customer_id INNER JOIN show_table S on S.show_id = T.show_id INNER JOIN movie M on M.movie_id = S.movie_id INNER JOIN room R on R.room_id = S.room_id WHERE C.username = ?");
             preparedStatement.setString(1, username);
     		ResultSet resultSet = preparedStatement.executeQuery();
     		{
 				while (resultSet.next()) {
 					Transaction transaction = new Transaction();
-					transaction.setReservedChairs(resultSet.getInt("T.reserved_places"));
+					transaction.setReservedChairs(resultSet.getInt("T.number_of_tickets"));
 					
 					Show show = new Show();
 					show.setShowDate(resultSet.getDate("S.show_date"));
@@ -70,7 +70,7 @@ public class TransactionDaoImpl {
 	public void addTransaction(Transaction transaction) {
 		try (final Connection connection = dataSource.getConnection();
 				final PreparedStatement preparedStatement = connection.prepareStatement(
-						"INSERT INTO show_transaction (customer_id, show_id, bankaccount, reserved_places, total_price) VALUES (?,?,?,?,?)")) {
+						"INSERT INTO show_transaction (customer_id, show_id, bankaccount, number_of_tickets, total_price) VALUES (?,?,?,?,?)")) {
 				
 	        	preparedStatement.setInt(1, transaction.getCustomer().getCustomerId());
 	           	preparedStatement.setInt(2, transaction.getShow().getShowId());
@@ -85,23 +85,4 @@ public class TransactionDaoImpl {
 		    }
 		
 	}
-	
-	public void updateChairsSold(int chairsSold, int showId) {
-
-		String updateSQL = "UPDATE show_table SET available_places = available_places + ? WHERE show_id = ?";
-
-		try {
-			final Connection connection = dataSource.getConnection();
-			final PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
-
-			preparedStatement.setInt(1, (chairsSold));
-			preparedStatement.setInt(2, showId);
-			preparedStatement.executeUpdate();
-
-			LOG.debug("Chairs_sold is updated.");
-		} catch (final SQLException e) {
-			throw new ServiceException("Something went wrong while updating the chairsSoldAmount.", e);
-		}
-	}
-	
 }

@@ -26,7 +26,7 @@ public class ShowService {
 	private static final Logger LOG = LoggerFactory.getLogger(ShowService.class);
 	
 	@EJB
-	private ShowDaoImpl genericDao;
+	private ShowDaoImpl showDao;
 	
 	/**
 	 * Returns a first showing record.
@@ -91,15 +91,15 @@ public class ShowService {
 				if (todaysShow.getMovie().getMovieId() == showsRowIter.getMovie().getMovieId()) {// hier bestaat de movie al in de index
 					ShowPresentationVO newShowPresentationVO = new ShowPresentationVO();
 					newShowPresentationVO.setShow(todaysShow);
-					newShowPresentationVO.setSoldOut(checkIfThereAreNoAvailablePlaces(todaysShow.getAvailablePlaces()));			
+					newShowPresentationVO.setSoldOut(checkIfThereAreNoAvailablePlaces(todaysShow.getTicketsSold(), todaysShow.getRoom().getCapacity()));			
 					showsRowIter.shows.add(newShowPresentationVO);
 					existingShowsPresentationVORow = showsRowIter;
 				}
 			}
-			if (existingShowsPresentationVORow == null) {//Nieuwe MovieRow worst gemaakt
+			if (existingShowsPresentationVORow == null) {//Nieuwe MovieRow gemaakt
 				ShowPresentationVO newShowPresentationVO = new ShowPresentationVO();
 				newShowPresentationVO.setShow(todaysShow);
-				newShowPresentationVO.setSoldOut(checkIfThereAreNoAvailablePlaces(todaysShow.getAvailablePlaces()));
+				newShowPresentationVO.setSoldOut(checkIfThereAreNoAvailablePlaces(todaysShow.getTicketsSold(), todaysShow.getRoom().getCapacity()));
 				
 				ShowsPresentationVO newShowsPresentationRowVO = new ShowsPresentationVO();			
 				List<ShowPresentationVO> showPresentationVOList = new ArrayList<ShowPresentationVO>();
@@ -113,7 +113,7 @@ public class ShowService {
 		return todaysShowsTable;
 	}
 	
-	
+	 
 	/**
 	 * @author rsanders
 	 *
@@ -148,8 +148,8 @@ public class ShowService {
 	}
 		
 	public List<ShowsPresentationVO> createTodaysShowsTable(){
-		final List<Show> shows = genericDao.getShowsForToday();
-		final List<Movie> movies = genericDao.getMovies();
+		final List<Show> shows = showDao.getShowsForToday();
+		final List<Movie> movies = showDao.getMovies();
 		List<ShowsPresentationVO> todaysShowsTable = null;
 		
 		shows.sort((itemL, itemR) -> {
@@ -180,8 +180,9 @@ public class ShowService {
 		return sb.toString();
 	}
 	
-	public Boolean checkIfThereAreNoAvailablePlaces(int availablePlaces){
-		if(availablePlaces == 0){
+	public Boolean checkIfThereAreNoAvailablePlaces(int ticketsSold, int capacity){
+		int availablePlaces = capacity - ticketsSold;
+		if(availablePlaces <= 0){
 			return true;
 		}else{
 			return false;

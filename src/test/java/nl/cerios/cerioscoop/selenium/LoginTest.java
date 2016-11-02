@@ -11,8 +11,7 @@ public class LoginTest extends SeleniumTest {
 	
 	@Test
 	public void shouldLoginCustomerSuccessfully() {
-	    CustomerPage customerPage = new IndexPage(getWebDriver())
-	      .loginToCustomerPage("C","C");
+	    CustomerPage customerPage = new IndexPage(getWebDriver()).loginToCustomerPage("C","C");
 	    
 	    Assert.assertNotNull(customerPage);
 	    Assert.assertEquals("Welcome, you have been logged in successfully\nHello C (customer)!", customerPage.getWelcomeMessage());

@@ -78,7 +78,7 @@ public class ShowDaoImpl{
 		final List<Show> shows = new ArrayList<>();
 		try (final Connection connection = dataSource.getConnection()){
 			final Statement statement = connection.createStatement();
-			final ResultSet resultSet = statement.executeQuery("SELECT show_id, movie_id, room_id, show_date, show_time, available_places, show_price FROM show_table"); { 
+			final ResultSet resultSet = statement.executeQuery("SELECT show_id, movie_id, room_id, show_date, show_time, tickets_sold, show_price FROM show_table"); { 
 			while (resultSet.next()) {
 				final int showId = resultSet.getInt("show_id");
 				final Movie movie = new MovieBuilder().withMovieId(resultSet.getBigDecimal("movie_id").toBigInteger()).build();
@@ -86,10 +86,10 @@ public class ShowDaoImpl{
 				room.setRoomId(resultSet.getInt("room_id"));
 				final Date showDate = resultSet.getDate("show_date");
 				final Time showTime = resultSet.getTime("show_time");
-				final int availablePlaces = resultSet.getInt("available_places");
+				final int numberOfTicketsSold = resultSet.getInt("tickets_sold");
 				final float showPrice = resultSet.getInt("show_price");
 				
-	        	shows.add(new Show(showId, movie, room, showDate, showTime, availablePlaces, showPrice));
+	        	shows.add(new Show(showId, movie, room, showDate, showTime, numberOfTicketsSold, showPrice));
 	        	}
 	        return shows;
 	      }
@@ -103,15 +103,19 @@ public class ShowDaoImpl{
 		final List<Show> shows = new ArrayList<>();
 		try (final Connection connection = dataSource.getConnection()){
 			final Statement statement = connection.createStatement();
-			final ResultSet resultSet = statement.executeQuery("SELECT show_id, movie_id, show_date, show_time, available_places FROM show_table WHERE show_date = CURDATE()"); { 
+			final ResultSet resultSet = statement.executeQuery("SELECT show_id, movie_id, room_id, show_date, show_time, tickets_sold, show_price FROM show_table WHERE show_date = CURDATE()"); { 
 
 			while (resultSet.next()) {
 				final int showId = resultSet.getInt("show_id");
 				final Movie movie = new MovieBuilder().withMovieId(resultSet.getBigDecimal("movie_id").toBigInteger()).build();
+				final Room room = new Room(); 
+				room.setRoomId(resultSet.getInt("room_id"));
+				room.setCapacity(getRoomCapacityByRoomId(room.getRoomId())); //TODO refactor SELECT query
 				final Date showDate = resultSet.getDate("show_date");
 				final Time showTime = resultSet.getTime("show_time");
-				final int availablePlaces = resultSet.getInt("available_places");
-				shows.add(new Show(showId, movie, showDate, showTime, availablePlaces));
+				final int numberOfTicketsSold = resultSet.getInt("tickets_sold");
+				final float showPrice = resultSet.getInt("show_price");
+				shows.add(new Show(showId, movie, room, showDate, showTime, numberOfTicketsSold, showPrice));
         	}
         return shows;
 	      }
@@ -129,7 +133,7 @@ public class ShowDaoImpl{
      */
     public Show getShowById(int showid){
     	Show show = new Show();
-       	String SQL = "SELECT S.show_id, M.title, R.room_name, S.available_places, S.show_price FROM show_table S INNER JOIN movie M on M.movie_id = S.movie_id INNER JOIN room R on R.room_id = S.room_id WHERE S.show_id = ?";
+       	String SQL = "SELECT S.show_id, M.title, R.room_name, S.tickets_sold, S.show_price FROM show_table S INNER JOIN movie M on M.movie_id = S.movie_id INNER JOIN room R on R.room_id = S.room_id WHERE S.show_id = ?";
     	try (final Connection connection = dataSource.getConnection()) {
 			final PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, showid);
@@ -143,7 +147,7 @@ public class ShowDaoImpl{
 				show.setShowId(resultSet.getInt("S.show_id"));
 				show.setMovie(movie);
 				show.setRoom(room);
-				show.setAvailablePlaces(resultSet.getInt("S.available_places"));
+				show.setTicketsSold(resultSet.getInt("S.tickets_sold"));
 				show.setShowPrice(resultSet.getInt("S.show_price"));
 				LOG.debug("SQL Showprice: " + show.getShowPrice());
 				}
@@ -156,6 +160,21 @@ public class ShowDaoImpl{
         }
     }
     
+    public void updateNumberOfTicketsSold(int numberOfTicketsSold, int showId) {
+		try {
+			final Connection connection = dataSource.getConnection();
+			final PreparedStatement preparedStatement = connection.prepareStatement("UPDATE show_table SET tickets_sold = tickets_sold + ? WHERE show_id = ?");
+
+			preparedStatement.setInt(1, (numberOfTicketsSold));
+			preparedStatement.setInt(2, showId);
+			preparedStatement.executeUpdate();
+
+			LOG.debug("Tickets_sold is updated.");
+		} catch (final SQLException e) {
+			throw new ServiceException("Something went wrong while updating the numberOfTicketsSold.", e);
+		}
+	}
+    
     public int getRoomCapacityByRoomId(int roomId){
 		int roomCapacity = 0;
 		try (final Connection connection = dataSource.getConnection()) {
@@ -164,7 +183,7 @@ public class ShowDaoImpl{
 			preparedstatement.setInt(1, roomId);
 			ResultSet resultSet = preparedstatement.executeQuery();
 			{
-				while (resultSet.next()) {
+				if(resultSet.next()) {
 					roomCapacity = resultSet.getInt("capacity");	
 				}
 			return roomCapacity;

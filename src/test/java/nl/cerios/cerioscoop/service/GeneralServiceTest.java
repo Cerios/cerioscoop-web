@@ -27,7 +27,7 @@ public class GeneralServiceTest extends DerbyDatabaseTest {
 	private ShowService showService;
 	
 	@InjectMocks
-	private ShowDaoImpl genericDao;
+	private ShowDaoImpl showDao;
 	
 	@InjectMocks
 	private CustomerDaoImpl customerDao;
@@ -39,14 +39,14 @@ public class GeneralServiceTest extends DerbyDatabaseTest {
 	
 	@Test
 	public void testGetMovies() {
-		final List<Movie> movies = genericDao.getMovies();
+		final List<Movie> movies = showDao.getMovies();
 		Assert.assertNotNull(movies);
 		Assert.assertEquals(7, movies.size());
 	}
 	
 	@Test
 	public void testGetShows() {
-		final List<Show> shows = genericDao.getShows();
+		final List<Show> shows = showDao.getShows();
 
 		Assert.assertNotNull(shows);
 		Assert.assertEquals(7, shows.size());
@@ -186,8 +186,8 @@ public class GeneralServiceTest extends DerbyDatabaseTest {
 		List<ShowsPresentationVO> filledTodaysShowsTable = new ArrayList<ShowsPresentationVO>();	
 		
 		//Tweede unittest: lijsten maken met derby vulling After
-			final List<Show> shows = genericDao.getShows();
-			final List<Movie> movies = genericDao.getMovies();	
+			final List<Show> shows = showDao.getShows();
+			final List<Movie> movies = showDao.getMovies();	
 			
 		//de todaysShowsTable vullen met de lege shows en movies.
 			filledTodaysShowsTable = showService.generateShowTable(shows, movies);	

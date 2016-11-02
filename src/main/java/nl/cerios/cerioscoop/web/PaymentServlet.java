@@ -30,7 +30,7 @@ import nl.cerios.cerioscoop.service.TransactionService;
 public class PaymentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Show show;
-    private int reservedPlaces;//TODO er mogen geen instance variables in de servlets gemaakt worden, dit wil je vermijden!
+    private int numberOfTickets;//TODO er mogen geen instance variables in de servlets gemaakt worden, dit wil je vermijden!
     private float totalPrice;
     private static final Logger LOG = LoggerFactory.getLogger(ShowDaoImpl.class);
     
@@ -53,12 +53,12 @@ public class PaymentServlet extends HttpServlet {
 		//TODO check Maximum aantal aan tickets dat kan worden gekocht
 		
 		//Get reserved places from BuyTickets
-		reservedPlaces = Integer.parseInt(request.getParameter("reserved_places"));	
+		numberOfTickets = Integer.parseInt(request.getParameter("number_of_tickets"));	
 		
 		int showId = Integer.parseInt(request.getParameter("showId"));
 		show = showDao.getShowById(showId);
 		
-		totalPrice = transactionService.calculateTotalPrice(show, reservedPlaces);
+		totalPrice = transactionService.calculateTotalPrice(show, numberOfTickets);
 		
 		//Moet in de session worden opgeslagen!
 		request.setAttribute("total_price", totalPrice);
@@ -80,7 +80,7 @@ public class PaymentServlet extends HttpServlet {
 		//reservedChairs = Integer.parseInt(request.getParameter("reserved_places"));
 		//show = genericDao.getShowById(1);  //Integer.parseInt(request.getParameter("show_id")
 		//totalPrice = customerService.calculateTotalPrice(show, (int) request.getAttribute("reserved_places"));
-		LOG.debug("reservedPlaces " + reservedPlaces);
+		LOG.debug("reservedPlaces " + numberOfTickets);
 		LOG.debug("bankaccount " + (String) request.getParameter("bankaccount"));
 		LOG.debug("firstname " + user.getFirstName());
 		
@@ -95,13 +95,12 @@ public class PaymentServlet extends HttpServlet {
 				LOG.error("Invalid usertype!");
 			}
 			
-			transaction.setReservedChairs(reservedPlaces);
+			transaction.setReservedChairs(numberOfTickets);
 			transaction.setShow(show);
 			transaction.setTotalPrice(totalPrice);
 			transcationDao.addTransaction(transaction);
 			
-			//TODO update_available_chairs in show_table
-			transcationDao.updateChairsSold(reservedPlaces, show.getShowId());
+			showDao.updateNumberOfTicketsSold(numberOfTickets, show.getShowId());
 			
 			out.println("<script type=\"text/javascript\">");
 			out.println("alert('Thanks for buying the tickets!');");
