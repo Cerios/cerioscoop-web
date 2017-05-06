@@ -52,6 +52,11 @@
 					class="navbar-button-text">TICKET HISTORY</span>
 				</a>
 			</div>
+			<div class="navbar-button">
+				<a id="updateshows-button" href="/cerioscoop-web/UpdateShowsServlet"> <span
+					class="navbar-button-text">UPDATE SHOWS</span>
+				</a>
+			</div>
 			<% } %>
 		           	<div class="navbar-button"><span>
 			<%if(session.getAttribute("user") != null) { 

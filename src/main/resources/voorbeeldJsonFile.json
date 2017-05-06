@@ -1,0 +1,28 @@
+[  
+    {  
+        "show_id":"8",
+        "movie":[{  
+            "movie_id":"8",
+            "title":"Kung Fu Panda",
+			"movie_description":"A story about a panda."
+        }],
+		"room_id":"1",
+        "show_date":"2017-05-06",
+		"show_time":"21:00:00",
+		"tickets_sold":"0",
+		"show_price":"10"
+    },
+    {  
+        "show_id":"9",
+        "movie":[{  
+            "movie_id":"9",
+            "title":"Kung Fu Panda 2",
+			"movie_description":"The second story about a panda."
+        }],
+		"room_id":"2",
+        "show_date":"2017-05-06",
+		"show_time":"21:00:00",
+		"tickets_sold":"0",
+		"show_price":"10"
+    }
+]

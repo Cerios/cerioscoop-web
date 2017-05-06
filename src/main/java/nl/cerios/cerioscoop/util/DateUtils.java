@@ -99,6 +99,20 @@ public final class DateUtils {
         return year+"j "+ week+"w "+ day+"d "+ hours+"h "+ minute+"m "+ second+"s ";
     }
 	
+	public static java.sql.Date convertStringToSqlDate(final String date) throws ParseException{
+		final DateFormat dateFormat = new SimpleDateFormat(dateFormatSql);
+		Date parsedSqlDate = dateFormat.parse(date);
+        java.sql.Date sqlDate = new java.sql.Date(parsedSqlDate.getTime());
+		return sqlDate;
+	}
+	
+	public static java.sql.Time convertStringToSqlTime(final String time) throws ParseException{
+		final DateFormat dateFormat = new SimpleDateFormat(timeFormat);
+		Date parsedSqlTime = dateFormat.parse(time);
+        java.sql.Time sqlTime = new java.sql.Time(parsedSqlTime.getTime());
+		return sqlTime;
+	}
+	
 	public static String convertCurrentSqlDateToString() {
 		final DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
 		String text = dateFormat.format(getCurrentSqlDate());

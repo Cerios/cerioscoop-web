@@ -1,5 +1,9 @@
 package nl.cerios.cerioscoop.dao;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -14,6 +18,10 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,10 +30,11 @@ import nl.cerios.cerioscoop.domain.MovieBuilder;
 import nl.cerios.cerioscoop.domain.Room;
 import nl.cerios.cerioscoop.domain.Show;
 import nl.cerios.cerioscoop.service.ServiceException;
+import nl.cerios.cerioscoop.util.DateUtils;
 
 @Stateless
 public class ShowDaoImpl{
-
+	
 	private static final Logger LOG = LoggerFactory.getLogger(ShowDaoImpl.class);
 	
 	@Resource(name = "jdbc/cerioscoop")
@@ -159,6 +168,85 @@ public class ShowDaoImpl{
             throw new ServiceException("Something went wrong while retrieving the transactions.", e);
         }
     }
+    
+	/**
+	 * addNewShows adds new show records to the database
+	 * 
+	 * De voorbeeldJsonFile.json zit in src/main/resources, zorg dat er niet meer record aanwezig zijn
+	 * dan in mysql-testdata.sql!! Dit is te testen door te klikken op UPDATE SHOWS. Eerst moet je inloggen!
+	 * 
+	 * http://stackoverflow.com/questions/10926353/how-to-read-json-file-into-
+	 * java-with-simple-json-library
+	 * http://stackoverflow.com/questions/6514876/most-efficient-conversion-of-
+	 * resultset-to-json
+	 */
+	public void addNewShows() {
+		JSONParser parser = new JSONParser();
+		JSONArray newShows = null;
+		
+		try {
+			newShows = (JSONArray) parser.parse(new FileReader("c:\\voorbeeldJsonFile.json"));
+		} catch (FileNotFoundException e3) {
+			e3.printStackTrace();
+		} catch (IOException e3) {
+			e3.printStackTrace();
+		} catch (ParseException e3) {
+			e3.printStackTrace();
+		}
+
+		try (final Connection connection = dataSource.getConnection()) {
+			//First insert the movie
+			try (final PreparedStatement preparedStatement = connection.prepareStatement(
+					"INSERT INTO movie (movie_id, title, movie_description) VALUES (?,?,?)")) {
+				for (Object Show : newShows) {
+					JSONObject newShow = (JSONObject) Show;
+					JSONArray movie = (JSONArray) newShow.get("movie");
+					for (Object obj : movie) {
+						JSONObject movieObject = (JSONObject) obj;
+						preparedStatement.setBigDecimal(1, new BigDecimal((String) movieObject.get("movie_id")));
+						preparedStatement.setString(2, (String) movieObject.get("title"));
+						preparedStatement.setString(3, (String) movieObject.get("movie_description"));
+						preparedStatement.executeUpdate();
+						LOG.debug("Movie inserted.");
+					}
+				}
+			} catch (SQLException e1) {
+				throw new ServiceException("Something went wrong while inserting the movie.", e1);
+			}
+			
+			//Second insert the show
+			try (final PreparedStatement preparedStatement = connection.prepareStatement(
+					"INSERT INTO show_table (movie_id, room_id, show_date, show_time, tickets_sold, show_price) VALUES (?,?,?,?,?,?)")) {
+				for (Object Show : newShows) {
+					// Er moet eigenlijk eerst nog gecheckt worden of de movie al bestaat
+					JSONObject newShow = (JSONObject) Show;
+					JSONArray movie = (JSONArray) newShow.get("movie");
+					BigDecimal movieID = null;
+					
+					for (Object obj : movie) {
+						JSONObject movieObject = (JSONObject) obj;
+						movieID = new BigDecimal((String) movieObject.get("movie_id"));
+					}
+					
+					preparedStatement.setBigDecimal(1, movieID);
+					preparedStatement.setInt(2, Integer.parseInt((String) newShow.get("room_id")));
+					preparedStatement.setDate(3, DateUtils.convertStringToSqlDate((String) newShow.get("show_date")));
+					preparedStatement.setTime(4, DateUtils.convertStringToSqlTime((String) newShow.get("show_time")));
+					preparedStatement.setInt(5, Integer.parseInt((String) newShow.get("tickets_sold")));
+					preparedStatement.setFloat(6, Float.parseFloat((String) newShow.get("show_price")));
+					preparedStatement.executeUpdate();
+					LOG.debug("Show inserted.");
+				}
+			} catch (final SQLException e) {
+				throw new ServiceException("Something went wrong while inserting the customer items.", e);
+			} catch (java.text.ParseException e) {
+				throw new ServiceException("Something went wrong while parsing.", e);
+			}
+		} catch (SQLException e2) {
+			throw new ServiceException("Something went wrong while connectiing to the database.", e2);
+		}
+	}
+         
     
     public void updateNumberOfTicketsSold(int numberOfTicketsSold, int showId) {
 		try {

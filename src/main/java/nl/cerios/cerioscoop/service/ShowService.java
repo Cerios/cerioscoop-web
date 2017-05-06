@@ -28,6 +28,10 @@ public class ShowService {
 	@EJB
 	private ShowDaoImpl showDao;
 	
+	public void getNewShows(){
+		showDao.addNewShows();
+	}
+	
 	/**
 	 * Returns a first showing record.
 	 * 
